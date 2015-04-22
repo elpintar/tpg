@@ -1,0 +1,20 @@
+/* sass --watch /Users/Erik/prog/tpg/static/styles:/Users/Erik/prog/tpg/static/styles */
+body {
+  width: 100%;
+  height: 100%; }
+
+.sub-screen {
+  display: inline-block;
+  height: 100%;
+  border: white 1px; }
+
+#scripture {
+  width: 37.5%; }
+
+#code {
+  width: 37.5%; }
+
+#prompt {
+  width: 25%; }
+
+/*# sourceMappingURL=tpg.css.map */
