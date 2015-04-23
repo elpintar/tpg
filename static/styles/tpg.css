@@ -50,9 +50,10 @@
   font-family: dayRoman, Times, serif;
   font-size: 16px;
   line-height: 22px; }
-  #scripture p a {
-    color: blue; }
+  #scripture p {
+    cursor: default; }
     #scripture p a:hover {
+      color: white;
       cursor: pointer; }
 
 #code {
@@ -66,5 +67,9 @@
     #code .code-line.dragging {
       background-color: #262822;
       box-shadow: 0px 0px 10px 5px #21221d; }
+  #code ol {
+    padding-left: 20px; }
+  #code .placeholder {
+    outline: 1px dashed #EEEEEE; }
 
 /*# sourceMappingURL=tpg.css.map */

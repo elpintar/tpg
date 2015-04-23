@@ -5,8 +5,7 @@ app.controller('CodeController', ['$scope', function($scope) {
 	this.init = function() {
 		this.scriptDiv = $("#scripture")
 		this.codeDiv = $("#code");
-		this.placedLines = {};
-		this.indentSize = 2;
+		this.cheat = false;
 		this.initLevel(1);
 	};
 
@@ -41,22 +40,33 @@ app.controller('CodeController', ['$scope', function($scope) {
 			var id = $(this).attr("id");
 			self.addLinesForLink(id);
 		});
+		if (this.cheat) $("#scripture p a").css("color", "blue");
 	};
 
 	this.initCodeScreen = function() {
 		// make the code a sortable list!!
-		$("#code").sortable({
+		$("#code").nestedSortable({
+			handle: 'div',
+			items: 'li',
+			toleranceElement: '> div',
+			tabSize: 10,
 			cursor: "move",
-			axis: "y",
+			cursorAt: {top: 8},
 			revert: true,
 			activate: function(event, ui) {
 				ui.item.addClass("dragging");
 			},
 			deactivate: function(event, ui) {
 				ui.item.removeClass("dragging");
-			}
+			},
+			// other options
+			forcePlaceholderSize: true,
+			helper:	'clone',
+			//opacity: .6,
+			placeholder: 'placeholder',
+			tolerance: 'pointer',
+			maxLevels: 4,
 		});
-		// initialize the lines inside
 		var initLines = this.initLines;
 		for (var i = 0; i < initLines.length; i++) {
 			var line = initLines[i];
@@ -64,39 +74,53 @@ app.controller('CodeController', ['$scope', function($scope) {
 			this.addLine(line, elemId);
 		}
 	}
+		
 
-	this.addLine = function(line, elemId) {
-		var lineP = $("<li>");
-		lineP.attr("id", elemId);
-		lineP.addClass("code-line");
-		lineP.addClass("ui-widget-content");
-		var codeStr = line.code;
-		// var lineCount = this.placedLines.length;
-		// var indentSpaces = 0;
-		// if (lineCount > 0 && 
-		// 		this.placedLines[lineCount-1]["indent_post"] > 0) {
-		// 	var indent_post = this.placedLines[lineCount-1]["indent_post"];
-		// 	var indent_pre = line["indent_pre"];
-		// 	indentSpaces = this.indentSize * (indent_post - indent_pre);
-		// 	codeStr = "&nbsp;".repeat(indentSpaces) + codeStr;
-		// }
-		// line["indent"] = indentSpaces;
-		lineP.html(codeStr);
-		this.codeDiv.append(lineP);
-		this.placedLines[elemId] = line;
-		console.log(this.codeDiv.sortable("toArray"));
+	this.addLine = function(line, elemId, appendElem) {
+		// create li container
+		var lineLi = $("<li>");
+		lineLi.attr("id", elemId);
+		if (line.hasOwnProperty("id")) {
+			lineLi.attr("id", line.id);
+		};
+		lineLi.addClass("code-line");
+		// set up div content
+		var contentDiv = $("<div>");
+		contentDiv.html(line.code);
+		lineLi.append(contentDiv);
+		// add nested sub code if it exists
+		var sublistOl = $("<ol>");
+		if (line.hasOwnProperty("midCode")) {
+			for (var i = 0; i < line.midCode.length; i++) {
+				this.addLine(line.midCode[i], elemId+"-"+i.toString, sublistOl);
+			}
+			lineLi.append(sublistOl);
+		}
+		// add end code if it exists
+		if (line.hasOwnProperty("endCode")) {
+			var endDiv = $("<div>");
+			endDiv.addClass(".endCode");
+			endDiv.html(line.endCode);
+			// add sublist if no sublist already
+			if (!line.hasOwnProperty("midCode")) lineLi.append(sublistOl);
+			lineLi.append(endDiv);
+		}
+		if (appendElem !== undefined) {
+			appendElem.append(lineLi);
+		}
+		else {
+			this.codeDiv.append(lineLi);
+		}
 	}
 
-	this.addLinesForLink = function(id, num) {
+	this.addLinesForLink = function(id) {
 		var linkObj = this.lineLinks[id];
 		if (linkObj["placed"]) return;
 		linkObj["placed"] = true;
-		var lineObjs = linkObj["lineObjs"];
-		for (var i = 0; i < lineObjs.length; i++) {
-			var line = lineObjs[i];
-			var elemId = id + "-" + i.toString();
-			this.addLine(line, elemId);
-		}
+		var line = linkObj["lineObj"];
+		var elemId = id;
+		// add the line to the end of the main function
+		this.addLine(line, elemId, $("#code #main > ol"));
 	}
 
 	this.checkForScripture = function() {
