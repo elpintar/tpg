@@ -1,20 +1,62 @@
 /* sass --watch /Users/Erik/prog/tpg/static/styles:/Users/Erik/prog/tpg/static/styles */
-body {
-  width: 100%;
-  height: 100%; }
+@font-face {
+  font-family: dayRoman;
+  src: url(../typefaces/dayrom.ttf); }
+#main-container {
+  width: 100vw;
+  height: 100vh; }
 
 .sub-screen {
-  display: inline-block;
   height: 100%;
-  border: white 1px; }
+  display: inline-block;
+  vertical-align: top;
+  position: relative; }
+  .sub-screen .sub-screen-header {
+    height: 30px;
+    position: fixed;
+    top: 0;
+    width: 100%; }
+  .sub-screen .content-body {
+    position: absolute;
+    top: 30px;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    overflow: scroll;
+    padding: 10px; }
+
+#scripture-container {
+  width: 35vw;
+  background-color: #EDE5D9; }
+  #scripture-container #scripture-header {
+    width: 35vw;
+    background-color: #f8f6f1; }
+
+#code-container {
+  width: 35vw;
+  background-color: #262822; }
+  #code-container #code-header {
+    width: 35vw;
+    background-color: #404439; }
+
+#prompt-container {
+  width: 30vw;
+  background-color: #030302; }
+  #prompt-container #prompt-header {
+    width: 30vw;
+    background-color: #313121; }
 
 #scripture {
-  width: 37.5%; }
+  font-family: dayRoman, Times, serif;
+  font-size: 16px;
+  line-height: 22px; }
+  #scripture p a {
+    color: blue; }
+    #scripture p a:hover {
+      cursor: pointer; }
 
 #code {
-  width: 37.5%; }
-
-#prompt {
-  width: 25%; }
+  font-family: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;
+  color: #EEEEEE; }
 
 /*# sourceMappingURL=tpg.css.map */

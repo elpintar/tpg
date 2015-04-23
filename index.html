@@ -3,27 +3,48 @@
 
 <head>
 	<title>The Programmer's Gospel</title>
+	<!-- STYLES -->
+  <link href="static/styles/reset.css" rel="stylesheet" type="text/css">
+	<link href="static/styles/tpg.css" rel="stylesheet" type="text/css">
+	<!-- SCRIPTS -->
 	<script src="static/scripts/jquery-1.9.0.js"></script>
   <script src="static/scripts/angular-1.2.26.min.js"></script>
-	<link href="static/styles/tpg.css" rel="stylesheet" type="text/css">
+	<script src="static/scripts/utils.js" type="text/javascript"></script>
+	<script src="static/scripts/genesis.js" type="text/javascript"></script>
 </head>
 <body ng-app="tpg">
 
-	<div id="main-container">
+	<div id="main-container" ng-controller="CodeController as codeCtrl" when-ready="codeCtrl.initCodeLinks();" ready-check="codeCtrl.checkForScripture()">
 		<!-- SCRIPTURE -->
-		<div id="scripture" class="sub-screen">
-			
-		</div>
+		<div id="scripture-container" class="sub-screen">
+			<div id="scripture-header" class="sub-screen-header">
+				
+			</div>
+			<div id="scripture" class="content-body" ng-include="'levels/1/genesis.html'"><p>HI</p>
+				<!-- <div ></div> -->
+			</div>
 		<!-- CODE -->
-		<div id="code" class="sub-screen">
-			
-		</div>
+		</div><div id="code-container" class="sub-screen">
+			<div id="code-header" class="sub-screen-header">
+				
+			</div>
+			<div id="code" class="content-body">
+				
+			</div>
 		<!-- PROMPT -->
-		<div id="prompt" class="sub-screen">
-			
+		</div><div id="prompt-container" class="sub-screen">
+			<div id="prompt-header" class="sub-screen-header">
+				
+			</div>
+			<div id="prompt" class="content-body">
+				
+			</div>
 		</div>
 	</div>
 
+	<!-- EXECUTING SCRIPT -->
+	<script src="static/scripts/tpg.js" type="text/javascript"></script>
+	<script src="static/scripts/whenReady.js" type="text/javascript"></script>
 </body>
 
 </html>
