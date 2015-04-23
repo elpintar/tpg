@@ -6,7 +6,7 @@ genesisInitLines = [
 	{code: "int main() {",
 	 midCode: [{code: "God.init(earth);"}],
 	 endCode: "}",
-	 id: "li_main"}
+	 id: "main"}
 ]
 
 
@@ -30,7 +30,7 @@ genesisObj = {
 	"work": {
 		key: "the man gave names",
 		lineObj: {code: "while (adam.working()) {",
-							midCode: [{code: "adam.call_name(animal);"}],
+							midCode: [{code: "adam.call_name(animal);", id: "callName"}],
 							endCode: "}"},
 	},
 	"animal": {
@@ -40,13 +40,13 @@ genesisObj = {
 	"alone": {
 		key: "alone",
 		lineObj: {code: "if (adam.lonely) {",
-					 		 midCode: [{code: "break;"}],
+					 		 midCode: [{code: "break;", id: "aloneBreak"}],
 					 		 endCode: "}"},
 	},
 	"sleep": {
 		key: "deep sleep",
 		lineObj: {code: "while (adam.sleeping()) {",
-							 midCode: [{code: "break;"}],
+							 midCode: [{code: "break;", id:"sleepBreak"}],
 							 endCode: "}"},
 	},
 	"eve": {
@@ -62,6 +62,15 @@ genesisObj = {
 		lineObj: {code: "assert(adam.naked && adam.unashamed);"},
 	}
 }
+
+genesisRules = [
+	{
+		preId: "eden",
+		rule: "before",
+		postId: "theTree",
+		error: ""
+	}
+]
 
 // set unset default parameters in the object
 for (var id in genesisObj) {

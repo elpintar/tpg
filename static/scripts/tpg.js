@@ -52,16 +52,17 @@ app.controller('CodeController', ['$scope', function($scope) {
 			tabSize: 10,
 			cursor: "move",
 			cursorAt: {top: 8},
-			revert: true,
+			revert: 200,
 			activate: function(event, ui) {
 				ui.item.addClass("dragging");
 			},
 			deactivate: function(event, ui) {
 				ui.item.removeClass("dragging");
 			},
-			stop: function(event, ui) {
-				//this.enforceOlNesting();
-			},
+			// tricky bug where ol elems get deleted
+			change: function(event, ui) {
+				this.enforceOlNesting();
+			}.bind(this),
 			// other options
 			forcePlaceholderSize: true,
 			helper:	'clone',
@@ -83,6 +84,7 @@ app.controller('CodeController', ['$scope', function($scope) {
 		// set up div with content
 		var contentDiv = $("<div>");
 		contentDiv.html(line.code);
+		contentDiv.addClass("code-line-text");
 		var newCodeElem = $("<li>");
 		// statements with possible nested expressions
 		if (line.hasOwnProperty("midCode") ||
@@ -103,6 +105,7 @@ app.controller('CodeController', ['$scope', function($scope) {
 				endDiv.html(line.endCode);
 				newCodeElem.append(endDiv);
 			}
+			newCodeElem.addClass("has-nesting");
 		}
 		// non-nested statements
 		else {
@@ -113,7 +116,7 @@ app.controller('CodeController', ['$scope', function($scope) {
 		// add id and class
 		newCodeElem.attr("id", elemId);
 		if (line.hasOwnProperty("id")) {
-			newCodeElem.attr("id", line.id);
+			newCodeElem.attr("id", "li_"+line.id);
 		};
 		newCodeElem.addClass("code-line");
 		// add new elem to parent elem
@@ -136,8 +139,25 @@ app.controller('CodeController', ['$scope', function($scope) {
 		this.addLine(line, elemId, $("#code #li_main > ol"));
 	}
 
+	// if statements that should have nesting get their
+	// ol deleted when elements move out of it,
+	// re-add the empty ol elements
 	this.enforceOlNesting = function() {
-		$("")
+		console.log("needs ol", $(".has-nesting:not(:has(ol)) .code-line-text:first"));
+		$(".has-nesting:not(:has(ol)) .code-line-text:first")
+			.after($("<ol>"));
+		//.each(function(){
+		// 	var numChildren = $(this).children().length;
+		// 	console.log("numChildren", numChildren);
+		// 	if (numChildren >= 1) {
+		// 		console.log("CHILD 0", $(this).children()[0]);
+		// 		$("ol").insertAfter($(this).children()[0]);
+		// 	}
+		// 	else {
+		// 		$(this).append($("ol"));
+		// 	}
+		// });
+		// $("ol").insertBefore($(".has-nesting:not(:has(ol))"));
 	}
 
 	this.checkForScripture = function() {
