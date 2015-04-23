@@ -57,6 +57,14 @@
 
 #code {
   font-family: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;
+  font-size: 16px;
   color: #EEEEEE; }
+  #code .code-line {
+    margin-top: 3px;
+    margin-bottom: 3px;
+    cursor: move; }
+    #code .code-line.dragging {
+      background-color: #262822;
+      box-shadow: 0px 0px 10px 5px #21221d; }
 
 /*# sourceMappingURL=tpg.css.map */

@@ -5,7 +5,7 @@ app.controller('CodeController', ['$scope', function($scope) {
 	this.init = function() {
 		this.scriptDiv = $("#scripture")
 		this.codeDiv = $("#code");
-		this.placedLines = [];
+		this.placedLines = {};
 		this.indentSize = 2;
 		this.initLevel(1);
 	};
@@ -44,37 +44,58 @@ app.controller('CodeController', ['$scope', function($scope) {
 	};
 
 	this.initCodeScreen = function() {
+		// make the code a sortable list!!
+		$("#code").sortable({
+			cursor: "move",
+			axis: "y",
+			revert: true,
+			activate: function(event, ui) {
+				ui.item.addClass("dragging");
+			},
+			deactivate: function(event, ui) {
+				ui.item.removeClass("dragging");
+			}
+		});
+		// initialize the lines inside
 		var initLines = this.initLines;
 		for (var i = 0; i < initLines.length; i++) {
 			var line = initLines[i];
-			this.addLine(line);
+			var elemId = "init-" + i.toString();
+			this.addLine(line, elemId);
 		}
 	}
 
-	this.addLine = function(line) {
-		var lineTag = "<p>{0}</p>";
+	this.addLine = function(line, elemId) {
+		var lineP = $("<li>");
+		lineP.attr("id", elemId);
+		lineP.addClass("code-line");
+		lineP.addClass("ui-widget-content");
 		var codeStr = line.code;
-		var lineCount = this.placedLines.length;
-		if (lineCount > 0 && 
-				this.placedLines[lineCount-1]["indent_post"] > 0) {
-			var indent_post = this.placedLines[lineCount-1]["indent_post"];
-			var indent_pre = line["indent_pre"];
-			var indentSpaces = this.indentSize * (indent_post - indent_pre);
-			codeStr = "&nbsp;".repeat(indentSpaces) + codeStr;
-		}
-		tempLineTag = lineTag.format(codeStr);
-		this.codeDiv.append(tempLineTag);
-		this.placedLines.push(line);
+		// var lineCount = this.placedLines.length;
+		// var indentSpaces = 0;
+		// if (lineCount > 0 && 
+		// 		this.placedLines[lineCount-1]["indent_post"] > 0) {
+		// 	var indent_post = this.placedLines[lineCount-1]["indent_post"];
+		// 	var indent_pre = line["indent_pre"];
+		// 	indentSpaces = this.indentSize * (indent_post - indent_pre);
+		// 	codeStr = "&nbsp;".repeat(indentSpaces) + codeStr;
+		// }
+		// line["indent"] = indentSpaces;
+		lineP.html(codeStr);
+		this.codeDiv.append(lineP);
+		this.placedLines[elemId] = line;
+		console.log(this.codeDiv.sortable("toArray"));
 	}
 
-	this.addLinesForLink = function(id) {
+	this.addLinesForLink = function(id, num) {
 		var linkObj = this.lineLinks[id];
 		if (linkObj["placed"]) return;
 		linkObj["placed"] = true;
 		var lineObjs = linkObj["lineObjs"];
 		for (var i = 0; i < lineObjs.length; i++) {
 			var line = lineObjs[i];
-			this.addLine(line);
+			var elemId = id + "-" + i.toString();
+			this.addLine(line, elemId);
 		}
 	}
 

@@ -12,6 +12,7 @@ $blackgray: #030302;
 $lightenPercent: 7%;
 $tanlighter: lighten($tan, 7%);
 $lightgraylighter: lighten($lightgray, 10%);
+$lightgraydarker: darken($lightgray, 2%);
 $blackgraylighter: lighten($blackgray, 15%);
 
 @font-face {
@@ -95,6 +96,16 @@ $blackgraylighter: lighten($blackgray, 15%);
 
 #code {
   font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;
-  color:#EEEEEE;
+  font-size: 16px;
+  color: #EEEEEE;
+  .code-line {
+  	margin-top: 3px;
+  	margin-bottom: 3px;
+  	cursor: move;
+  	&.dragging {
+  		background-color: $lightgray;
+  		box-shadow: 0px 0px 10px 5px $lightgraydarker;
+  	}
+  }
 }
 
