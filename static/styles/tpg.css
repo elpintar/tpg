@@ -45,6 +45,9 @@
   #prompt-container #prompt-header {
     width: 30vw;
     background-color: #313121; }
+    #prompt-container #prompt-header:hover {
+      background-color: #5f5f3f;
+      cursor: pointer; }
 
 #scripture {
   font-family: dayRoman, Times, serif;
@@ -56,8 +59,12 @@
       color: white;
       cursor: pointer; }
 
-#code {
+#code-container, #prompt-container {
   font-family: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;
+  font-size: 16px;
+  color: white; }
+
+#code {
   font-size: 16px;
   color: #EEEEEE; }
   #code .code-line {
@@ -71,5 +78,11 @@
     padding-left: 20px; }
   #code .placeholder {
     outline: 1px dashed #EEEEEE; }
+
+#prompt-header {
+  text-align: center; }
+  #prompt-header #code-run-button {
+    padding-top: 6px;
+    display: inline-block; }
 
 /*# sourceMappingURL=tpg.css.map */

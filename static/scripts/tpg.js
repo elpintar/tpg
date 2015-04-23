@@ -13,6 +13,8 @@ app.controller('CodeController', ['$scope', function($scope) {
 		if (levelNum == 1) {
 			this.lineLinks = genesisObj;
 			this.initLines = genesisInitLines;
+			this.fileName = "eden.c";
+			this.rules = genesisRules;
 		}
 	};
 
@@ -40,7 +42,7 @@ app.controller('CodeController', ['$scope', function($scope) {
 			var id = $(this).attr("id");
 			self.addLinesForLink(id);
 		});
-		if (this.cheat) $("#scripture p a").css("color", "blue");
+		if (this.cheat) $("#scripture p a").css("color", "gray");
 	};
 
 	this.initCodeScreen = function() {
@@ -69,7 +71,7 @@ app.controller('CodeController', ['$scope', function($scope) {
 			//opacity: .6,
 			placeholder: 'placeholder',
 			tolerance: 'pointer',
-			maxLevels: 4,
+			maxLevels: 0,
 		});
 		var initLines = this.initLines;
 		for (var i = 0; i < initLines.length; i++) {
@@ -122,7 +124,6 @@ app.controller('CodeController', ['$scope', function($scope) {
 		// add new elem to parent elem
 		if (appendElem !== undefined) {
 			appendElem.append(newCodeElem);
-			console.log($("#code").sortable("toArray"));
 		}
 		else {
 			this.codeDiv.append(newCodeElem);
@@ -143,25 +144,73 @@ app.controller('CodeController', ['$scope', function($scope) {
 	// ol deleted when elements move out of it,
 	// re-add the empty ol elements
 	this.enforceOlNesting = function() {
-		console.log("needs ol", $(".has-nesting:not(:has(ol)) .code-line-text:first"));
-		$(".has-nesting:not(:has(ol)) .code-line-text:first")
-			.after($("<ol>"));
-		//.each(function(){
-		// 	var numChildren = $(this).children().length;
-		// 	console.log("numChildren", numChildren);
-		// 	if (numChildren >= 1) {
-		// 		console.log("CHILD 0", $(this).children()[0]);
-		// 		$("ol").insertAfter($(this).children()[0]);
-		// 	}
-		// 	else {
-		// 		$(this).append($("ol"));
-		// 	}
-		// });
-		// $("ol").insertBefore($(".has-nesting:not(:has(ol))"));
+		$(".has-nesting:not(:has(ol)) .code-line-text:first").after($("<ol>"));
 	}
 
 	this.checkForScripture = function() {
 		return $("#scripture p").length > 0;
+	}
+
+	this.runCode = function() {
+		var codeTree = $("#code").sortable("toArray");
+		var curDepth = 0;
+		var prevDepth = 0;
+		var seenIds = [];
+		var errors = $("<div>");
+		errors.attr("id", "errors");
+		console.log("running", codeTree);
+		if (!codeTree) return;
+		for (var i = 0; i < codeTree.length; i++) {
+			var codeLine = codeTree[i];
+			var curId = codeLine.item_id;
+			var parentId = codeLine.parent_id;
+			curDepth = codeLine.depth;
+			// do checks here
+			for (var j = 0; j < this.rules.length; j++) {
+				var rule = this.rules[j];
+				if (rule.rule == "before" && 
+						rule.postId == curId && seenIds.indexOf(rule.preId) == -1) {
+					var errStr = (this.fileName + ": error: " + rule.error);
+					var newErr = $("<p>").html(errStr);
+					errors.append(newErr);
+				}
+				if (rule.rule == "hasChild" &&
+					  rule.postId == curId && rule.preId != parentId) {
+					console.log("hasChild rule", curId, "not inside", parentId);
+					var errStr = (this.fileName + ": error: " + rule.error);
+					var newErr = $("<p>").html(errStr);
+					errors.append(newErr);
+				}
+			}
+			seenIds.push(curId);
+			prevDepth = curDepth;
+		}
+		// check for missing elements if everything else is good
+		var codeIds = [];
+		for (lineId in this.lineLinks) {codeIds.push(lineId)};
+		var shuffledLineLinks = shuffleArray(codeIds);
+		if (errors.children().length == 0) {
+			for (var i = shuffledLineLinks.length - 1; i >= 0; i--) {
+				lineId = shuffledLineLinks[i];
+				if (seenIds.indexOf(lineId) == -1) {
+					var errStr = (this.fileName + ":" + " error: missing " +
+						lineId + " line in file.");
+					var newErr = $("<p>");
+					newErr.html(errStr);
+					errors.append(newErr);
+					break;
+				}
+			}
+		}
+		$("#prompt").empty();
+		if (errors.children().length == 0) {
+			var winStr = "Compilation successful...<br>That's all for now!";
+			var winP = $("<p>").html(winStr);
+			$("#prompt").append(winP);
+		}
+		else {
+			$("#prompt").append(errors);
+		}
 	}
 
 	this.init();
