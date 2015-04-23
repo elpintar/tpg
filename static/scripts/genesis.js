@@ -6,7 +6,7 @@ genesisInitLines = [
 	{code: "int main() {",
 	 midCode: [{code: "God.init(earth);"}],
 	 endCode: "}",
-	 id: "main"}
+	 id: "li_main"}
 ]
 
 

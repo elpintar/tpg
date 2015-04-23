@@ -45,7 +45,7 @@ app.controller('CodeController', ['$scope', function($scope) {
 
 	this.initCodeScreen = function() {
 		// make the code a sortable list!!
-		$("#code").nestedSortable({
+		this.codeDiv.nestedSortable({
 			handle: 'div',
 			items: 'li',
 			toleranceElement: '> div',
@@ -59,6 +59,9 @@ app.controller('CodeController', ['$scope', function($scope) {
 			deactivate: function(event, ui) {
 				ui.item.removeClass("dragging");
 			},
+			stop: function(event, ui) {
+				//this.enforceOlNesting();
+			},
 			// other options
 			forcePlaceholderSize: true,
 			helper:	'clone',
@@ -70,47 +73,57 @@ app.controller('CodeController', ['$scope', function($scope) {
 		var initLines = this.initLines;
 		for (var i = 0; i < initLines.length; i++) {
 			var line = initLines[i];
-			var elemId = "init-" + i.toString();
+			var elemId = "li_init" + i.toString();
 			this.addLine(line, elemId);
 		}
 	}
 		
 
 	this.addLine = function(line, elemId, appendElem) {
-		// create li container
-		var lineLi = $("<li>");
-		lineLi.attr("id", elemId);
-		if (line.hasOwnProperty("id")) {
-			lineLi.attr("id", line.id);
-		};
-		lineLi.addClass("code-line");
-		// set up div content
+		// set up div with content
 		var contentDiv = $("<div>");
 		contentDiv.html(line.code);
-		lineLi.append(contentDiv);
-		// add nested sub code if it exists
-		var sublistOl = $("<ol>");
-		if (line.hasOwnProperty("midCode")) {
-			for (var i = 0; i < line.midCode.length; i++) {
-				this.addLine(line.midCode[i], elemId+"-"+i.toString, sublistOl);
+		var newCodeElem = $("<li>");
+		// statements with possible nested expressions
+		if (line.hasOwnProperty("midCode") ||
+				line.hasOwnProperty("endCode")) {
+			newCodeElem.append(contentDiv);
+			// add nested sub code if it exists
+			var sublistOl = $("<ol>");
+			if (line.hasOwnProperty("midCode")) {
+				for (var i = 0; i < line.midCode.length; i++) {
+					this.addLine(line.midCode[i], "li_"+elemId, sublistOl);
+				}
 			}
-			lineLi.append(sublistOl);
+			newCodeElem.append(sublistOl);
+			// add end code if it exists
+			if (line.hasOwnProperty("endCode")) {
+				var endDiv = $("<div>");
+				endDiv.addClass("endCode");
+				endDiv.html(line.endCode);
+				newCodeElem.append(endDiv);
+			}
 		}
-		// add end code if it exists
-		if (line.hasOwnProperty("endCode")) {
-			var endDiv = $("<div>");
-			endDiv.addClass(".endCode");
-			endDiv.html(line.endCode);
-			// add sublist if no sublist already
-			if (!line.hasOwnProperty("midCode")) lineLi.append(sublistOl);
-			lineLi.append(endDiv);
+		// non-nested statements
+		else {
+			newCodeElem.append(contentDiv);
+			// TODO doesn't work!
+			newCodeElem.addClass("mjs-nestedSortable-no-nesting");
 		}
+		// add id and class
+		newCodeElem.attr("id", elemId);
+		if (line.hasOwnProperty("id")) {
+			newCodeElem.attr("id", line.id);
+		};
+		newCodeElem.addClass("code-line");
+		// add new elem to parent elem
 		if (appendElem !== undefined) {
-			appendElem.append(lineLi);
+			appendElem.append(newCodeElem);
+			console.log($("#code").sortable("toArray"));
 		}
 		else {
-			this.codeDiv.append(lineLi);
-		}
+			this.codeDiv.append(newCodeElem);
+		}		
 	}
 
 	this.addLinesForLink = function(id) {
@@ -118,9 +131,13 @@ app.controller('CodeController', ['$scope', function($scope) {
 		if (linkObj["placed"]) return;
 		linkObj["placed"] = true;
 		var line = linkObj["lineObj"];
-		var elemId = id;
+		var elemId = "li_" + id;
 		// add the line to the end of the main function
-		this.addLine(line, elemId, $("#code #main > ol"));
+		this.addLine(line, elemId, $("#code #li_main > ol"));
+	}
+
+	this.enforceOlNesting = function() {
+		$("")
 	}
 
 	this.checkForScripture = function() {

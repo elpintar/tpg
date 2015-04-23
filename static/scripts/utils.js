@@ -21,3 +21,27 @@ String.prototype.repeat = function( num )
 {
     return new Array( num + 1 ).join( this );
 }
+
+// for weird id number bug!
+var numberString = function(n) {
+	var numberDict = {
+		0: "zeo",
+		1: "onn",
+		2: "too",
+		3: "tee",
+		4: "for",
+		5: "fie",
+		6: "sic",
+		7: "sen",
+		8: "eht",
+		9: "nin"
+	}
+	if (n < 10 && n >= 0) {
+		return numberDict[n]
+	}
+	else {
+		var divide = Math.floor(n/10);
+		var digit = Math.round(n % 10)
+		return numberString(divide) + numberDict[digit]
+	}
+}
