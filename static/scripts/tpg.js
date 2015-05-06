@@ -2,27 +2,31 @@
 var app = angular.module('tpg', []);
 
 app.controller('CodeController', ['$scope', function($scope) {
-	this.init = function() {
-		this.scriptDiv = $("#scripture")
-		this.codeDiv = $("#code");
-		this.cheat = false;
-		this.initLevel(1);
+	// vm = "view-model" as shortcut for "this"
+	var vm = $scope;
+
+	vm.init = function() {
+		vm.scriptDiv = $("#scripture");
+		vm.codeDiv = $("#code");
+		vm.cheat = false;
+		vm.level = 1;
+		vm.initLevel(vm.level);
 	};
 
-	this.initLevel = function(levelNum) {
+	vm.initLevel = function(levelNum) {
 		if (levelNum == 1) {
-			this.lineLinks = genesisObj;
-			this.initLines = genesisInitLines;
-			this.fileName = "eden.c";
-			this.rules = genesisRules;
+			vm.lineLinks = genesisObj;
+			vm.initLines = genesisInitLines;
+			vm.fileName = "eden.c";
+			vm.rules = genesisRules;
 		}
 	};
 
-	this.initCodeLinks = function() {
-		this.initCodeScreen();
-		var lineLinks = this.lineLinks;
+	vm.initCodeLinks = function() {
+		vm.initCodeScreen();
+		var lineLinks = vm.lineLinks;
 		var scriptParagraphs = $("p").html();
-		for (id in lineLinks) {
+		for (var id in lineLinks) {
 			var linkObj = lineLinks[id];
 			// look for code key in each paragraph
 			$("p").each(function(index){
@@ -34,20 +38,19 @@ app.controller('CodeController', ['$scope', function($scope) {
 					aTag = aTag.format(id, key);
 					text = text.replace(key, aTag);
 					sp.html(text);
-				};
+				}
 			});
 		};
-		var self = this;
 		$("#scripture p a").click(function() {
 			var id = $(this).attr("id");
-			self.addLinesForLink(id);
+			vm.addLinesForLink(id);
 		});
-		if (this.cheat) $("#scripture p a").css("color", "gray");
+		if (vm.cheat) $("#scripture p a").css("color", "gray");
 	};
 
-	this.initCodeScreen = function() {
+	vm.initCodeScreen = function() {
 		// make the code a sortable list!!
-		this.codeDiv.nestedSortable({
+		vm.codeDiv.nestedSortable({
 			handle: 'div',
 			items: 'li',
 			toleranceElement: '> div',
@@ -63,8 +66,8 @@ app.controller('CodeController', ['$scope', function($scope) {
 			},
 			// tricky bug where ol elems get deleted
 			change: function(event, ui) {
-				this.enforceOlNesting();
-			}.bind(this),
+				vm.enforceOlNesting();
+			},
 			// other options
 			forcePlaceholderSize: true,
 			helper:	'clone',
@@ -73,16 +76,16 @@ app.controller('CodeController', ['$scope', function($scope) {
 			tolerance: 'pointer',
 			maxLevels: 0,
 		});
-		var initLines = this.initLines;
+		var initLines = vm.initLines;
 		for (var i = 0; i < initLines.length; i++) {
 			var line = initLines[i];
 			var elemId = "li_init" + i.toString();
-			this.addLine(line, elemId);
+			vm.addLine(line, elemId);
 		}
 	}
 		
 
-	this.addLine = function(line, elemId, appendElem) {
+	vm.addLine = function(line, elemId, appendElem) {
 		// set up div with content
 		var contentDiv = $("<div>");
 		contentDiv.html(line.code);
@@ -96,7 +99,7 @@ app.controller('CodeController', ['$scope', function($scope) {
 			var sublistOl = $("<ol>");
 			if (line.hasOwnProperty("midCode")) {
 				for (var i = 0; i < line.midCode.length; i++) {
-					this.addLine(line.midCode[i], "li_"+elemId, sublistOl);
+					vm.addLine(line.midCode[i], "li_"+elemId, sublistOl);
 				}
 			}
 			newCodeElem.append(sublistOl);
@@ -126,32 +129,32 @@ app.controller('CodeController', ['$scope', function($scope) {
 			appendElem.append(newCodeElem);
 		}
 		else {
-			this.codeDiv.append(newCodeElem);
+			vm.codeDiv.append(newCodeElem);
 		}		
 	}
 
-	this.addLinesForLink = function(id) {
-		var linkObj = this.lineLinks[id];
+	vm.addLinesForLink = function(id) {
+		var linkObj = vm.lineLinks[id];
 		if (linkObj["placed"]) return;
 		linkObj["placed"] = true;
 		var line = linkObj["lineObj"];
 		var elemId = "li_" + id;
 		// add the line to the end of the main function
-		this.addLine(line, elemId, $("#code #li_main > ol"));
+		vm.addLine(line, elemId, $("#code #li_main > ol"));
 	}
 
 	// if statements that should have nesting get their
 	// ol deleted when elements move out of it,
 	// re-add the empty ol elements
-	this.enforceOlNesting = function() {
+	vm.enforceOlNesting = function() {
 		$(".has-nesting:not(:has(ol)) .code-line-text:first").after($("<ol>"));
 	}
 
-	this.checkForScripture = function() {
+	vm.checkForScripture = function() {
 		return $("#scripture p").length > 0;
 	}
 
-	this.runCode = function() {
+	vm.runCode = function() {
 		var codeTree = $("#code").sortable("toArray");
 		var curDepth = 0;
 		var prevDepth = 0;
@@ -166,18 +169,18 @@ app.controller('CodeController', ['$scope', function($scope) {
 			var parentId = codeLine.parent_id;
 			curDepth = codeLine.depth;
 			// do checks here
-			for (var j = 0; j < this.rules.length; j++) {
-				var rule = this.rules[j];
+			for (var j = 0; j < vm.rules.length; j++) {
+				var rule = vm.rules[j];
 				if (rule.rule == "before" && 
 						rule.postId == curId && seenIds.indexOf(rule.preId) == -1) {
-					var errStr = (this.fileName + ": error: " + rule.error);
+					var errStr = (vm.fileName + ": error: " + rule.error);
 					var newErr = $("<p>").html(errStr);
 					errors.append(newErr);
 				}
 				if (rule.rule == "hasChild" &&
 					  rule.postId == curId && rule.preId != parentId) {
 					console.log("hasChild rule", curId, "not inside", parentId);
-					var errStr = (this.fileName + ": error: " + rule.error);
+					var errStr = (vm.fileName + ": error: " + rule.error);
 					var newErr = $("<p>").html(errStr);
 					errors.append(newErr);
 				}
@@ -187,13 +190,13 @@ app.controller('CodeController', ['$scope', function($scope) {
 		}
 		// check for missing elements if everything else is good
 		var codeIds = [];
-		for (lineId in this.lineLinks) {codeIds.push(lineId)};
+		for (lineId in vm.lineLinks) {codeIds.push(lineId)};
 		var shuffledLineLinks = shuffleArray(codeIds);
 		if (errors.children().length == 0) {
 			for (var i = shuffledLineLinks.length - 1; i >= 0; i--) {
 				lineId = shuffledLineLinks[i];
 				if (seenIds.indexOf(lineId) == -1) {
-					var errStr = (this.fileName + ":" + " error: missing " +
+					var errStr = (vm.fileName + ":" + " error: missing " +
 						lineId + " line in file.");
 					var newErr = $("<p>");
 					newErr.html(errStr);
@@ -202,16 +205,19 @@ app.controller('CodeController', ['$scope', function($scope) {
 				}
 			}
 		}
-		$("#prompt").empty();
+		$("#prompt-error-message").empty();
+		$("#conversation-content").empty();
+		console.log($("#command-input").val());
+		$("#command-input").val("");
 		if (errors.children().length == 0) {
 			var winStr = "Compilation successful...<br>That's all for now!";
 			var winP = $("<p>").html(winStr);
-			$("#prompt").append(winP);
+			$("#prompt-error-message").append(winP);
 		}
 		else {
-			$("#prompt").append(errors);
+			$("#prompt-error-message").append(errors);
 		}
 	}
 
-	this.init();
+	vm.init();
 }])

@@ -13,17 +13,18 @@
   <script src="static/scripts/jquery.mjs.nestedSortable.js"></script>
   <script src="static/scripts/angular-1.2.26.min.js"></script>
 	<script src="static/scripts/utils.js"></script>
-	<script src="static/scripts/genesis.js"></script>
+	<script src="levels/1/genesis.js"></script>
+	<script src="levels/1/serpent.js"></script>
 </head>
 <body ng-app="tpg">
 
-	<div id="main-container" ng-controller="CodeController as codeCtrl" when-ready="codeCtrl.initCodeLinks();" ready-check="codeCtrl.checkForScripture()">
+	<div id="main-container" ng-controller="CodeController as codeCtrl" when-ready="initCodeLinks();" ready-check="checkForScripture()">
 		<!-- SCRIPTURE -->
 		<div id="scripture-container" class="sub-screen">
 			<div id="scripture-header" class="sub-screen-header">
 				
 			</div>
-			<div id="scripture" class="content-body" ng-include="'levels/1/genesis.html'"><p>HI</p>
+			<div id="scripture" class="content-body" ng-include="'levels/1/genesis.html'"><p>No Scripture Loaded</p>
 				<!-- <div ></div> -->
 			</div>
 		<!-- CODE -->
@@ -35,18 +36,26 @@
 				
 			</ol>
 		<!-- PROMPT -->
-		</div><div id="prompt-container" class="sub-screen">
-			<div id="prompt-header" class="sub-screen-header" ng-click="codeCtrl.runCode();">
+		</div><div id="prompt-container" ng-controller="ConversationController as convCtrl"  class="sub-screen">
+			<div id="prompt-header" class="sub-screen-header" ng-click="runCode();clearInput();">
 				<div id="code-run-button">RUN CODE</div>
 			</div>
-			<div id="prompt" class="content-body">
-				
+			<!-- tabindex='1' makes the prompt "focusable" -->
+			<div id="prompt" class="content-body" tabindex='1'>
+				<div id="prompt-error-message">
+				</div>
+				<input id="command-input" type="text" ng-model="curCommand.text">
+				<div id="conversation-content"></div>
+				<span id="input-field">
+					<span id="command-display">{{curCommand.text}}</span><span id="input-box" class="blink">&nbsp;</span>
+				</span>
 			</div>
 		</div>
 	</div>
 
 	<!-- EXECUTING SCRIPT -->
 	<script src="static/scripts/tpg.js"></script>
+	<script src="static/scripts/conversation.js"></script>
 	<script src="static/scripts/whenReady.js"></script>
 </body>
 

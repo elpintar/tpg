@@ -14,6 +14,7 @@ $tanlighter: lighten($tan, 7%);
 $lightgraylighter: lighten($lightgray, 10%);
 $lightgraydarker: darken($lightgray, 2%);
 $blackgraylighter: lighten($blackgray, 15%);
+$whitegray: #ECECED;
 
 @font-face {
   font-family: dayRoman;
@@ -132,6 +133,39 @@ $blackgraylighter: lighten($blackgray, 15%);
 	#code-run-button {
 		padding-top: 6px;
 		display: inline-block;
+	}
+}
+
+#prompt p,
+#input-field span {
+	word-wrap: break-word;
+	white-space: pre;
+}
+
+#input-field {
+	#command-display {
+
+	}
+}
+
+// no focus lines
+#prompt:focus {
+  outline: none;
+}
+
+#command-input {
+	width: 0;
+	height: 0;
+	padding: 0;
+	border: none;
+	position: absolute;
+	top: -1000px;
+}
+
+#input-box {
+	background-color: $blackgray;
+	&.blink {
+		background-color: $whitegray;
 	}
 }
 

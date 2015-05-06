@@ -85,4 +85,25 @@
     padding-top: 6px;
     display: inline-block; }
 
+#prompt p,
+#input-field span {
+  word-wrap: break-word;
+  white-space: pre; }
+
+#prompt:focus {
+  outline: none; }
+
+#command-input {
+  width: 0;
+  height: 0;
+  padding: 0;
+  border: none;
+  position: absolute;
+  top: -1000px; }
+
+#input-box {
+  background-color: #030302; }
+  #input-box.blink {
+    background-color: #ECECED; }
+
 /*# sourceMappingURL=tpg.css.map */
