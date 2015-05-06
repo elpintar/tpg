@@ -22,6 +22,13 @@ String.prototype.repeat = function( num )
     return new Array( num + 1 ).join( this );
 }
 
+// from http://stackoverflow.com/questions/10780087/getting-integer-
+// value-from-a-string-using-javascript-jquery
+var extractNumFromString = function(s) {
+	digitStr = s.replace( /[^\d.]/g, '' );
+	return parseInt(digitStr);
+}
+
 // for weird id number bug!
 var numberString = function(n) {
 	var numberDict = {

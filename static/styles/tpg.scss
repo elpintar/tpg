@@ -6,6 +6,8 @@ $codeWidth: 35vw;
 $promptWidth: 30vw;
 
 $tan: #EDE5D9;
+$darkTan: #402E1D;
+$foundWordColor: lighten($darkTan, 30%);
 $lightgray: #262822;
 //$darkgray: #161712;
 $blackgray: #030302;
@@ -15,10 +17,20 @@ $lightgraylighter: lighten($lightgray, 10%);
 $lightgraydarker: darken($lightgray, 2%);
 $blackgraylighter: lighten($blackgray, 15%);
 $whitegray: #ECECED;
+$darkErrorRed: #4D0101;
+$darkerErrorRed: darken($darkErrorRed, 5%);
 
 @font-face {
   font-family: dayRoman;
   src: url(../typefaces/dayrom.ttf);
+}
+
+@mixin transition($transition-property, $transition-time, $method) {
+  -webkit-transition: $transition-property $transition-time $method;
+  -moz-transition: $transition-property $transition-time $method;
+  -ms-transition: $transition-property $transition-time $method;
+  -o-transition: $transition-property $transition-time $method;
+  transition: $transition-property $transition-time $method;
 }
 
 // CONTAINER STYLES
@@ -87,9 +99,14 @@ $whitegray: #ECECED;
 	font-family: dayRoman, Times, serif;
 	font-size: 16px;
 	line-height: 22px;
+	color: $darkTan;
 	p {
 		cursor: default;
 		a {
+			@include transition(all, 0.1s, ease-in-out);
+			&.found {
+				color: $foundWordColor;
+			}
 			&:hover {
 				color: white;
 				cursor: pointer;
@@ -110,12 +127,24 @@ $whitegray: #ECECED;
   font-size: 16px;
   color: #EEEEEE;
   .code-line {
+  	@include transition(all, 0.1s, ease-in-out);
+  	transition-property: background-color, box-shadow;
   	margin-top: 3px;
   	margin-bottom: 3px;
   	cursor: move;
+  	border-radius: 3px;
   	&.dragging {
-  		background-color: $lightgray;
+  		background-color: $lightgraydarker;
   		box-shadow: 0px 0px 10px 5px $lightgraydarker;
+  	}
+  	&.hasError {
+  		background-color: $darkErrorRed;
+  		box-shadow: 0px 0px 2px 2px $darkErrorRed;
+  	}
+  	&.isHighlighted {
+  		background-color: $whitegray;
+  		color: $blackgray;
+  		box-shadow: 0px 0px 2px 2px $whitegray;
   	}
   }
   ol {
@@ -136,7 +165,8 @@ $whitegray: #ECECED;
 	}
 }
 
-#prompt p,
+// #prompt p,
+// #pre-input-content span,
 #input-field span {
 	word-wrap: break-word;
 	white-space: pre;
@@ -159,13 +189,17 @@ $whitegray: #ECECED;
 	padding: 0;
 	border: none;
 	position: absolute;
-	top: -1000px;
+	// hack to make it ALWAYS scroll down when input is selected
+	top: 7770777px;
 }
 
 #input-box {
 	background-color: $blackgray;
 	&.blink {
 		background-color: $whitegray;
+	}
+	&.inactive {
+		background-color: $lightgray;
 	}
 }
 

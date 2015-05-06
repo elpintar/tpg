@@ -38,7 +38,7 @@ genesisObj = {
 		lineObj: {code: "creature* animal = God->choose_from(earth->animals);"},
 	},
 	"alone": {
-		key: "alone",
+		key: "not good for the man to be alone",
 		lineObj: {code: "if (adam->lonely) {",
 					 		 midCode: [{code: "break;", id: "aloneBreak"}],
 					 		 endCode: "}"},
@@ -50,7 +50,7 @@ genesisObj = {
 							 endCode: "}"},
 	},
 	"eve": {
-		key: "woman",
+		key: "a woman",
 		lineObj: {code: "person* eve = God->breathe_life(adam->rib);"},
 	},
 	"join": {

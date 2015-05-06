@@ -14,6 +14,7 @@ app.controller('CodeController', ['$scope', function($scope) {
 	};
 
 	vm.initLevel = function(levelNum) {
+		vm.codeCompiles = false;
 		if (levelNum == 1) {
 			vm.lineLinks = genesisObj;
 			vm.initLines = genesisInitLines;
@@ -44,6 +45,16 @@ app.controller('CodeController', ['$scope', function($scope) {
 		$("#scripture p a").click(function() {
 			var id = $(this).attr("id");
 			vm.addLinesForLink(id);
+			$("#li_"+id).addClass("isHighlighted");
+		});
+		$("#scripture p a").mouseenter(function() {
+			$(this).addClass("found");
+			var id = $(this).attr("id");
+			$("#li_"+id).addClass("isHighlighted");
+		});
+		$("#scripture p a").mouseleave(function() {
+			var id = $(this).attr("id");
+			$("#li_"+id).removeClass("isHighlighted");
 		});
 		if (vm.cheat) $("#scripture p a").css("color", "gray");
 	};
@@ -161,8 +172,10 @@ app.controller('CodeController', ['$scope', function($scope) {
 		var seenIds = [];
 		var errors = $("<div>");
 		errors.attr("id", "errors");
-		console.log("running", codeTree);
 		if (!codeTree) return;
+		// get rid of previous error highlighting
+		$(".hasError").removeClass("hasError");
+		// check for errors
 		for (var i = 0; i < codeTree.length; i++) {
 			var codeLine = codeTree[i];
 			var curId = codeLine.item_id;
@@ -179,7 +192,6 @@ app.controller('CodeController', ['$scope', function($scope) {
 				}
 				if (rule.rule == "hasChild" &&
 					  rule.postId == curId && rule.preId != parentId) {
-					console.log("hasChild rule", curId, "not inside", parentId);
 					var errStr = (vm.fileName + ": error: " + rule.error);
 					var newErr = $("<p>").html(errStr);
 					errors.append(newErr);
@@ -187,6 +199,11 @@ app.controller('CodeController', ['$scope', function($scope) {
 			}
 			seenIds.push(curId);
 			prevDepth = curDepth;
+			// found an error! code crashes and breaks
+			if (errors.contents().length > 0) {
+				$("#li_"+curId).addClass("hasError");
+				break;
+			}
 		}
 		// check for missing elements if everything else is good
 		var codeIds = [];
@@ -207,12 +224,8 @@ app.controller('CodeController', ['$scope', function($scope) {
 		}
 		$("#prompt-error-message").empty();
 		$("#conversation-content").empty();
-		console.log($("#command-input").val());
-		$("#command-input").val("");
 		if (errors.children().length == 0) {
-			var winStr = "Compilation successful...<br>That's all for now!";
-			var winP = $("<p>").html(winStr);
-			$("#prompt-error-message").append(winP);
+			vm.codeCompiles = true;
 		}
 		else {
 			$("#prompt-error-message").append(errors);

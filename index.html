@@ -37,7 +37,7 @@
 			</ol>
 		<!-- PROMPT -->
 		</div><div id="prompt-container" ng-controller="ConversationController as convCtrl"  class="sub-screen">
-			<div id="prompt-header" class="sub-screen-header" ng-click="runCode();clearInput();">
+			<div id="prompt-header" class="sub-screen-header" ng-click="runCode();clearInput();startLevel();">
 				<div id="code-run-button">RUN CODE</div>
 			</div>
 			<!-- tabindex='1' makes the prompt "focusable" -->
@@ -46,9 +46,11 @@
 				</div>
 				<input id="command-input" type="text" ng-model="curCommand.text">
 				<div id="conversation-content"></div>
+				<span id="pre-input-content"></span>
 				<span id="input-field">
-					<span id="command-display">{{curCommand.text}}</span><span id="input-box" class="blink">&nbsp;</span>
+					<span id="command-display">{{curCommand.text}}</span><span id="input-box" class="inactive">&nbsp;</span>
 				</span>
+				<div id="post-content-spacer"></div>
 			</div>
 		</div>
 	</div>
