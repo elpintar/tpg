@@ -11,7 +11,7 @@ app.controller('ConversationController', ['$scope', function($scope) {
 	};
 
 	// start the conversation for this level
-	vm.startLevel = function() {
+	vm.startConvo = function() {
 		// don't start unless the code works and you haven't started yet
 		if (!vm.codeCompiles || vm.conversationHappening) return;
 		console.log("starting convo for level", vm.level);
@@ -228,5 +228,4 @@ app.controller('ConversationController', ['$scope', function($scope) {
 	}
 
 	vm.init();
-	//vm.startLevel();
 }])

@@ -29,6 +29,12 @@ var extractNumFromString = function(s) {
 	return parseInt(digitStr);
 }
 
+// custom show that uses visibility and opacity
+// used in conjunction with the sass mixin "hiddenTransition"
+var customShow = function(elem) {
+	elem.css("opacity", 1).css("visibility", "visible");
+}
+
 // for weird id number bug!
 var numberString = function(n) {
 	var numberDict = {

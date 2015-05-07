@@ -38,8 +38,7 @@ var serpentObj = {
 		qText: ("did God really say, " + 
 			"\"You shall not eat of any tree in the garden\"?"),
 		yResp: ("No, he didn't actually say you can't eat "+
-			"from any of the trees.<br>" + 
-			"<br>Here now, "),
+			"from any of the trees.<br><br>"),
 		nResp: "Yeah, he didn't, right?<br><br>",
 		nextQ: "cantTouch"
 	},
@@ -54,9 +53,9 @@ var serpentObj = {
 	"doTouch": {
 		preText: "So obviously, there's something really " + 
 			"special about this tree that he's trying to keep from you.<br><br>" +
-			"At least touch it - what's the harm in that?  " + 
-			"He didn't say you shouldn't do that.<br><br>" +
-			"Touch the fruit - it's nice and ripe.<br><br>",
+			"Touch the fruit - it's nice and ripe.<br><br>"+
+			"What would be the harm in it? " + 
+			"He never said you couldn't.<br><br>",
 		qText: "Touch?",
 		yResp: "See! ",
 		nResp: "Aw, come on. ",
@@ -80,22 +79,21 @@ var serpentObj = {
 		preText: "And what's more, it shall give you insight unto the world." +
 			"  Things which you can't even imagine right now.<br><br>",
 		qText: "Do you want that insight and wisdom?",
-		yResp: "Yes, of course you do.<br><br>",
-		nResp: "No, of course you do.  Deep down...you do. ",
+		yResp: "Yes, of course you do!<br><br>",
+		nResp: "No, of course you do.  Deep down you really do want this. ",
 		nextQ: "bite"
 	},
 	"bite": {
-		preText: "You know you want it.  "+
-			"You know you desire it.<br><br>"+
-			"I'm telling you - "+
+		preText: "And what's more - "+
+			"I'm telling you just between us - "+
 			"when you eat of it your eyes will be opened, "+
 			"and you will be like God, " +
 			"having the power of the knowledge of good and evil.<br><br>"+
-			"You will be able to no longer follow him blindly, "+
-			"but make your own decisions, with your own knowledge, "+
+			"No longer will you need to follow him blindly, "+
+			"but you could make your own decisions, with your own knowledge, "+
 			"and your own judgement.  You shall be that much more "+
 			"like God himself.<br><br>"+
-			"So now, go on.  Take a bite.<br><br>",
+			"What are you waiting for!  Take a bite.<br><br>",
 		qText: "Bite the fruit?",
 		yResp: "",
 		yNext: "(end)",
@@ -118,7 +116,7 @@ var serpentObj = {
 		preText: "Oh come on!  You know you want it.  "+
 			"You will be like God himself!<br><br>"+
 			"You'd have to be crazy not to!  You'd have to be an idiot!<br><br>"+
-			"...Now, I know you're not an idiot.  "+
+			"...now, I know you're not an idiot.  "+
 			"I know you're smart enough to do this.  "+
 			"I'm here for you, aren't I?  "+
 			"I want what you want.<br><br>"+

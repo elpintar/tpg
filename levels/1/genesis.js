@@ -50,15 +50,15 @@ genesisObj = {
 							 endCode: "}"},
 	},
 	"eve": {
-		key: "a woman",
+		key: "God made a woman",
 		lineObj: {code: "person* eve = God->breathe_life(adam->rib);"},
 	},
 	"join": {
-		key: "one flesh",
+		key: "they become one flesh",
 		lineObj: {code: "adam->join(eve);"},
 	},
 	"unashamed": {
-		key: "no shame",
+		key: "they felt no shame",
 		lineObj: {code: "assert(adam->naked && adam->unashamed);"},
 	}
 }
@@ -93,6 +93,12 @@ genesisRules = [
 		rule: "before",
 		postId: "callName",
 		error: "animal does not exist to be named"
+	},
+	{
+		preId: "work",
+		rule: "before",
+		postId: "sleep",
+		error: "Adam must work before he gets tired enough to sleep"
 	},
 	{
 		preId: "eve",
@@ -141,7 +147,13 @@ genesisRules = [
 		rule: "hasChild",
 		postId: "sleepBreak",
 		error: "adam does not wake up"
-	}
+	},
+	{
+		preId: "eve",
+		rule: "before",
+		postId: "sleepBreak",
+		error: "Adam wakes up before Eve is able to be created"
+	},
 ]
 
 // set unset default parameters in the object
