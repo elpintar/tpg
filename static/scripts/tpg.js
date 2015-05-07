@@ -6,18 +6,21 @@ app.controller('CodeController', ['$scope', function($scope) {
 	var vm = $scope;
 
 	vm.init = function() {
-		vm.level = 0;
-		vm.cheat = false;
-		vm.initLevel(vm.level);
+		vm.o = {};
+		vm.o.level = 2;
+		vm.initCodeFor = vm.o.level;
+		//vm.cheat = true;
+		//vm.o.startConvoNow = true;
+		vm.initLevel();
 	};
 
-	vm.initLevel = function(levelNum) {
+	vm.initLevel = function() {
+		console.log("initLevel", vm.o.level);
 		vm.codeCompiles = false;
 		vm.sectionLinkCounts = {};
 		vm.sectionLinksFound = {};
-		$(".scripture-partial").hide();
 		$("#full-screen-container").hide();
-		if (levelNum == 0) {
+		if (vm.o.level == 0) {
 			$("#full-screen-container").show();
 			vm.scriptureId = "scripture-full-screen";
 			vm.scriptDiv = $("#"+vm.scriptureId);
@@ -30,18 +33,16 @@ app.controller('CodeController', ['$scope', function($scope) {
 			vm.initLines = originsInitLines;
 			vm.fileName = "earth.c";
 			vm.rules = originsRules;
-			$("#origins-scripture").show();
 			// special tutorial hint if they don't do anything for 5s
 			setTimeout(function() {
 				if ($("#section-0-2").css("visibility") === "hidden") {
 					var helpfulText = "Read with your cursor to expand your sight.";
 					vm.addPtoElem(helpfulText, vm.errorMsgContainer);
+					customShow(vm.errorMsgContainer);
 				}
-				// always show this anyways
-				customShow(vm.errorMsgContainer);
 			}, 5000);
 		}
-		else if (levelNum == 1) {
+		else if (vm.o.level == 1) {
 			vm.scriptureId = "scripture";
 			vm.scriptDiv = $("#"+vm.scriptureId);
 			vm.codeId = "code";
@@ -53,8 +54,23 @@ app.controller('CodeController', ['$scope', function($scope) {
 			vm.initLines = genesisInitLines;
 			vm.fileName = "eden.c";
 			vm.rules = genesisRules;
-			$("#genesis-scripture").show();
 		}
+		else if (vm.o.level == 2) {
+			vm.scriptureId = "scripture";
+			vm.scriptDiv = $("#"+vm.scriptureId);
+			vm.codeId = "code";
+			vm.codeDiv = $("#"+vm.codeId);
+			vm.codeAddToSelector = "#"+vm.codeId;
+			vm.codeRunId = "code-run-area";
+			vm.errorMsgContainer = $("#prompt-error-message");
+			vm.lineLinks = passoverObj;
+			vm.initLines = passoverInitLines;
+			vm.fileName = "egypt.c";
+			vm.rules = passoverRules;
+		}
+		// if we need to init the code for this level, do so
+		if (vm.initCodeFor !== vm.o.level)
+			vm.initCodeLinks();
 	};
 
 	vm.initCodeLinks = function() {
@@ -63,12 +79,15 @@ app.controller('CodeController', ['$scope', function($scope) {
 		for (var id in lineLinks) {
 			var linkObj = lineLinks[id];
 			// look for code key in each paragraph
+			var foundKey = false;
 			$("#"+vm.scriptureId+" p").each(function(index){
 				var sp = $(this);
 				var aTag = ("<a id='{0}'>{1}</a>");
 				var key = linkObj["key"];
 				var text = sp.html();
-				if (text.indexOf(key) != -1) {
+				// key is in this paragraph
+				if (text.indexOf(key) != -1 && !foundKey) {
+					foundKey = true;
 					aTag = aTag.format(id, key);
 					text = text.replace(key, aTag);
 					sp.html(text);
@@ -79,7 +98,7 @@ app.controller('CodeController', ['$scope', function($scope) {
 				var sectionId = $(this).attr("id");
 				vm.sectionLinkCounts[sectionId] = $("#"+sectionId+" a").length;
 				vm.sectionLinksFound[sectionId] = [];
-				var firstSectionId = "section-"+vm.level.toString()+"-1";
+				var firstSectionId = "section-"+vm.o.level.toString()+"-1";
 				if (sectionId === firstSectionId) {
 					customShow($(this));
 				}
@@ -104,11 +123,12 @@ app.controller('CodeController', ['$scope', function($scope) {
 			if (secFoundIds.indexOf(id) === -1) {
 				secFoundIds.push(id);
 				// reveal next section if all in this one found
+				console.log(sectionId, vm.sectionLinkCounts[sectionId]);
 				if (secFoundIds.length === vm.sectionLinkCounts[sectionId]) {
 					var secIdEnd = sectionId.substring(
 						"section-0-".length, sectionId.length);
 					var secNum = extractNumFromString(secIdEnd);
-					var nextSectionId = "section-" + vm.level.toString() +
+					var nextSectionId = "section-" + vm.o.level.toString() +
 						"-" + (secNum + 1).toString();
 					customShow($("#"+nextSectionId));
 					// all words are uncovered - ripple effect
@@ -118,10 +138,11 @@ app.controller('CodeController', ['$scope', function($scope) {
 						setTimeout(function() {
 							customShow($("#"+vm.codeRunId));
 							// tutorial hint to click code if no code!
-							if (vm.level == 0 && 
+							if (vm.o.level == 0 && 
 									$(vm.codeAddToSelector).children().length == 0)
 								vm.errorMsgContainer.append($("<p>").html(
 								"Click key phrases to generate code."));
+								customShow(vm.errorMsgContainer);
 						}, 2000);
 					}
 				}
@@ -133,10 +154,15 @@ app.controller('CodeController', ['$scope', function($scope) {
 			$("#li_"+id).removeClass("isHighlighted");
 		});
 		if (vm.cheat) $("#"+vm.scriptureId+" p a").css("color", "gray");
+		// mark completed
+		vm.initCodeFor = vm.o.level;
 	};
 
 	vm.initCodeScreen = function() {
 		// make the code a sortable list!!
+		vm.codeDiv.empty();
+		$("#conversation-content").empty();
+		$("#pre-input-content").empty();
 		vm.codeDiv.nestedSortable({
 			handle: 'div',
 			items: 'li',
@@ -169,12 +195,28 @@ app.controller('CodeController', ['$scope', function($scope) {
 			var elemId = "li_init" + i.toString();
 			vm.addLine(line, elemId);
 		}
+		// actually show the scripture!
+		vm.showRightScripture();
 		// show code, fade in
 		setTimeout(function() {
 			customShow(vm.codeDiv);
 		}, 1000);
 	}
-		
+
+	vm.showRightScripture = function() {
+		$(".scripture-partial").each(function(index) {
+			$(this).hide();
+		});
+		if (vm.o.level == 0) {
+			$("#origins-scripture").show();
+		}
+		else if (vm.o.level == 1) {
+			$("#genesis-scripture").show();
+		}
+		else if (vm.o.level == 2) {
+			$("#passover-scripture").show();
+		}
+	}		
 
 	vm.addLine = function(line, elemId, appendElem) {
 		// set up div with content
@@ -217,7 +259,6 @@ app.controller('CodeController', ['$scope', function($scope) {
 		newCodeElem.addClass("code-line");
 		// add new elem to parent elem
 		if (appendElem !== undefined) {
-			console.log("adding", newCodeElem, "to", appendElem);
 			appendElem.append(newCodeElem);
 		}
 		else {
@@ -336,7 +377,7 @@ app.controller('CodeController', ['$scope', function($scope) {
 		else {
 			vm.errorMsgContainer.append(errors);
 			// tutorial text for level 0
-			if (vm.level == 0 && !missingError) {
+			if (vm.o.level == 0 && !missingError) {
 				var helpfulText = "(Reorder code so that the code compiles.)";
 				vm.addPtoElem(helpfulText, vm.errorMsgContainer);
 			}

@@ -235,12 +235,15 @@ $darkButton: #252525;
 	height: 100%;
 	min-height: 700px;
 	background-color: black;
-	opacity: 1.0;
 	color: darken($whitegray, 10%);
 	#content-container {
 		text-align: center;
-		padding-top: 10%;
+		padding-top: 1em;
 		padding-bottom: 3em;
+		h1 {
+			font-size: 45px;
+			margin: 1em 0em;
+		}
 		#work-content {
 			display: inline-block;
 			white-space: nowrap;
@@ -325,9 +328,31 @@ $darkButton: #252525;
   padding: 14px;
   max-width: 80%;
   display: inline-block;
+  line-height: 21px;
 }
 
+// OVERLAYS
 
+#overlay-container {
+	position: fixed;
+	display: none;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 100;
+	background-color: none;
+	@include transition(background-color, 1.0s, ease-in-out);
+	div {
+		width: 100%;
+		height: 100%;
+		background-position: center;
+		background-repeat: no-repeat;
+		//background-image: url("../pics/bigBang.gif");
+		background-size: cover;
+		//background-size: 80px 60px;
+	}
+}
 
 
 

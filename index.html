@@ -14,13 +14,16 @@
   <script src="static/scripts/angular-1.2.26.min.js"></script>
 	<script src="static/scripts/utils.js"></script>
 	<script src="static/scripts/animations.js"></script>
+	<script src="static/scripts/overlays.js"></script>
 	<script src="levels/0/origins.js"></script>
 	<script src="levels/1/genesis.js"></script>
 	<script src="levels/1/serpent.js"></script>
+	<script src="levels/2/passover.js"></script>
+	<script src="levels/2/desert.js"></script>
 </head>
 <body ng-app="tpg">
 
-	<div id="main-container" ng-controller="CodeController as codeCtrl" when-ready="initCodeLinks();" ready-check="checkForScripture()">
+	<div id="main-container" ng-controller="CodeController as codeCtrl" when-ready="initCodeLinks();" ready-check="checkForScripture();">
 
 		<!-- SCRIPTURE -->
 		<div id="scripture-container" class="sub-screen">
@@ -29,6 +32,9 @@
 			</div>
 			<div id="scripture" class="content-body">
 				<div ng-include="'levels/1/genesis.html'" id="genesis-scripture" class="scripture-partial">
+					<p>No Scripture Loaded</p>
+				</div>
+				<div ng-include="'levels/2/passover.html'" id="passover-scripture" class="scripture-partial">
 					<p>No Scripture Loaded</p>
 				</div>
 			</div>
@@ -61,8 +67,9 @@
 			</div>
 		</div>
 
-		<div id="full-screen-container">
+		<div id="full-screen-container" ng-controller="FullScreenController as fsCtrl">
 			<div id="content-container">
+				<h1>The Programmer's Gospel</h1>
 				<div id="work-content">
 					<div id="scripture-full-screen">
 						<div ng-include="'levels/0/origins.html'" id="origins-scripture" class="scripture-partial">
@@ -71,7 +78,7 @@
 					</div><ol id="code-full-screen"></ol>
 				</div>
 				<div id="button-content">
-					<div id="code-run-area-full-screen" ng-click="runCode();">
+					<div id="code-run-area-full-screen" ng-click="runCode();tryTransition();">
 						<div id="code-run-button-full-screen">RUN CODE</div>
 						<br>
 					</div>
@@ -79,11 +86,14 @@
 				</div>
 			</div>
 		</div>
+
+		<div id="overlay-container"></div>
 	</div>
 
 	<!-- EXECUTING SCRIPT -->
 	<script src="static/scripts/tpg.js"></script>
 	<script src="static/scripts/conversation.js"></script>
+	<script src="static/scripts/fullScreen.js"></script>
 	<script src="static/scripts/whenReady.js"></script>
 </body>
 

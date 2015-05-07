@@ -1,4 +1,4 @@
-// serpent.js
+// desert.js
 
 // each key in the object points to a question object
 // 		qText - text that [y/n] will appear after
@@ -13,18 +13,17 @@
 //		yNext - next question to ask after YES
 // 		nNext - next question to ask after NO
 
-var serpentStart = "success";
+var desertStart = "success";
 
-var serpentObj = {
+var desertObj = {
 	"success": {
-		preText: ("Compilation success!<br><br>" +
-			"Wow! You are really smart.<br><br>"),
-		qText: "Would you like to gain more knowledge?",
-		yResp: "Great!<br><br>",
-		nResp: "Well, listen to what I have to say and " +
-			" you think about it.<br><br>",
-		nextQ: "specialTrees",
+		preText: "Compilation success!<br><br>" +
+			"The people have successfully escaped Egypt!<br><br>",
+		qText: "Do you want to see more of this game be made?",
+		bothResp: "",
+		nextQ: "success",
 	},
+	// bogus
 	"specialTrees": {
 		qText: "So you know that some trees are more special than others, right?",
 		yResp: "Right.<br><br>Now, ",
@@ -129,7 +128,7 @@ var serpentObj = {
 		nNext: "exhausted"
 	},
 	"exhausted": {
-		preText: "You have exhausted the serpent's tactics for now.  "+
+		preText: "You have exhausted the desert's tactics for now.  "+
 			"He slithers away.<br><br>"+
 			"However, this is a story that does continue.<br><br>"+
 			"The fruit is bitten, "+

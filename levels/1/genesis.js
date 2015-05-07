@@ -152,7 +152,7 @@ genesisRules = [
 		preId: "eve",
 		rule: "before",
 		postId: "sleepBreak",
-		error: "Adam wakes up before Eve is able to be created"
+		error: "Adam wakes up before Eve can be created"
 	},
 ]
 

@@ -8,16 +8,33 @@ app.controller('ConversationController', ['$scope', function($scope) {
 		vm.curCommand = {};
 		vm.curCommand.text = "";
 		vm.conversationHappening = false;
+		if (vm.o.startConvoNow) {
+			vm.codeCompiles = true;
+			setTimeout(function(){
+				vm.startConvo();
+			}, 2000);
+		}
 	};
+
+	vm.reinit = function() {
+		vm.clearInput();
+		vm.conversationHappening = false;
+	}
 
 	// start the conversation for this level
 	vm.startConvo = function() {
 		// don't start unless the code works and you haven't started yet
 		if (!vm.codeCompiles || vm.conversationHappening) return;
-		console.log("starting convo for level", vm.level);
-		if (vm.level == 1) {
+		console.log("starting convo for level", vm.o.level);
+		if (vm.o.level == 1) {
 			vm.convObj = serpentObj;
 			vm.curStatement = serpentStart;
+			vm.respondAndAsk("");
+			vm.conversationHappening = true;
+		}
+		if (vm.o.level == 2) {
+			vm.convObj = desertObj;
+			vm.curStatement = desertStart;
 			vm.respondAndAsk("");
 			vm.conversationHappening = true;
 		}
@@ -107,6 +124,23 @@ app.controller('ConversationController', ['$scope', function($scope) {
 		return qText + options;
 	}
 
+	// check for a special case!
+	vm.onStatementChange = function() {
+		var newStatement = vm.curStatement;
+		if (vm.o.level === 1) {
+			if (newStatement === "delightful") {
+				appleOverlay();
+			}
+			else if (newStatement === "(end)") {
+				sinEntersTheWorld(function(){
+					vm.o.level = 2;
+					vm.initLevel();
+					vm.reinit();
+				});
+			}
+		}
+	}
+
 	// get response text and change current statement!
 	vm.applyResponse = function(response) {
 		var statement = vm.curStatement;
@@ -137,6 +171,8 @@ app.controller('ConversationController', ['$scope', function($scope) {
 			else {
 				vm.curStatement = stObj.nextQ;
 			}
+			// special cases
+			vm.onStatementChange();
 			// <br> added because you usually want a break
 			return "<br>" + responseStr;
 		}
@@ -157,6 +193,8 @@ app.controller('ConversationController', ['$scope', function($scope) {
 	vm.respondAndAsk = function(response) {
 		// respond to previous answer
 		var responseStr = vm.applyResponse(response);
+		// stop if we switched to the last statement
+		if (vm.curStatement === "(end)") return;
 		// append optional pre-text
 		var preText = vm.getPreText();
 		// get current question
@@ -228,4 +266,4 @@ app.controller('ConversationController', ['$scope', function($scope) {
 	}
 
 	vm.init();
-}])
+}]);
