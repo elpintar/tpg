@@ -161,6 +161,9 @@
       background-color: #5f5f3f;
       cursor: pointer; }
 
+#prompt.content-body {
+  word-wrap: break-word; }
+
 #input-field span {
   word-wrap: break-word;
   white-space: pre; }

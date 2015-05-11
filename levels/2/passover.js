@@ -20,40 +20,27 @@ passoverObj = {
 		key: "Moses",
 		lineObj: {code: "moses = israelites.leader"},
 	},
-	"tenthDay": {
-		key: "on the tenth day of this month",
-		lineObj: {code: "<br>time.waitFor(time.month.day == 10)"}
-	},
 	"eachHousehold": {
 		key: "for each household",
-		lineObj: {code: "for family in israelites:",
-							endCode: ""}
-	},
-	"lambs": {
-		key: "the sheep or the goats",
-		lineObj: {code: "lambs = family.sheep + family.goats"},
+		lineObj: {code: "<br>for family in israelites:",
+							endCode: "&nbsp;"}
 	},
 	"noDefects": {
 		key: "must be year-old males without defect",
-		lineObj: {code: "while family.lamb.withDefects:",
-							endCode: ""},
+		lineObj: {code: "lambs = family.lambs.withoutDefects"},
 	},
 	"lamb": {
 		key: "take a lamb for his family",
-		lineObj: {code: "family.lamb = family.choose(lambs)"}
-	},
-	"fourteenthDay": {
-		key: "the fourteenth day of the month",
-		lineObj: {code: "<br>time.waitFor(time.month.day == 14)"},
+		lineObj: {code: "family.lamb = family.chooseFrom(lambs)"}
 	},
 	"twilight": {
 		key: "at twilight",
-		lineObj: {code: "time.waitFor(time.day.twilight)"},
+		lineObj: {code: "time.waitFor(time.twilight)"},
 	},
 	"communityMembers": {
 		key: "all the members of the community of Israel",
-		lineObj: {code: "for family in israelites:",
-							endCode: ""}
+		lineObj: {code: "<br>for family in israelites:",
+							endCode: "&nbsp;"}
 	},
 	"slaughter": {
 		key: "slaughter them",
@@ -70,12 +57,12 @@ passoverObj = {
 	},
 	"midnight": {
 		key: "On that same night",
-		lineObj: {code: "<br>time.waitFor(time.day.midnight)"},
+		lineObj: {code: "time.waitFor(time.midnight)"},
 	},
 	"egyptFamilies": {
 		key: "pass through Egypt",
-		lineObj: {code: "for family in egypt:",
-							endCode: ""},
+		lineObj: {code: "<br>for family in egypt:",
+							endCode: "&nbsp;"},
 	},
 	"doorpostHasBlood": {
 		key: "when I see the blood, I will pass over you",
@@ -126,6 +113,12 @@ passoverRules = [
 		error: "the Israelites do not exist for Moses to be their leader"
 	},
 	{
+		preId: "israelites",
+		rule: "before",
+		postId: "eachHousehold",
+		error: "the Israelites do not exist to have families"
+	},
+	{
 		preId: "egypt",
 		rule: "before",
 		postId: "egyptFamilies",
@@ -150,19 +143,13 @@ passoverRules = [
 		error: "Moses does not exist to obey God"
 	},
 	{
-		preId: "tenthDay",
-		rule: "before",
-		postId: "fourteenthDay",
-		error: "the tenth day comes before the fourteenth day"
-	},
-	{
-		preId: "fourteenthDay",
+		preId: "twilight",
 		rule: "before",
 		postId: "midnight",
-		error: "the fourteenth day comes before the fifteenth day"
+		error: "twilight comes before midnight"
 	},
 	{
-		preId: "lambs",
+		preId: "noDefects",
 		rule: "before",
 		postId: "lamb",
 		error: "lambs do not exist to be chosen from"
@@ -216,20 +203,13 @@ passoverRules = [
 		postId: "deliver",
 		error: "Moses must obey God before the people can be delivered"
 	},
-
-
 	{
-		preId: "tenthDay",
+		preId: "permission",
 		rule: "before",
-		postId: "eachHousehold",
-		error: "each family must choose their lamb on the tenth day"
+		postId: "deliver",
+		error: "Israel can only be fully delivered after leaving egypt"
 	},
-	{
-		preId: "eachHousehold",
-		rule: "hasChild",
-		postId: "lambs",
-		error: "each family has a different set of lambs"
-	},
+
 	{
 		preId: "eachHousehold",
 		rule: "hasChild",
@@ -237,23 +217,16 @@ passoverRules = [
 		error: "picking a lamb without defects must be done for each family"
 	},
 	{
-		preId: "noDefects",
+		preId: "eachHousehold",
 		rule: "hasChild",
 		postId: "lamb",
-		error: "lambs must be chosen while a lamb without defects has not "+
-					 "yet been found"
+		error: "a lamb must be chosen for each family"
 	},
 	{
-		preId: "fourteenthDay",
+		preId: "twilight",
 		rule: "before",
 		postId: "communityMembers",
-		error: "each family must slaughter their lamb on the fourteenth day"
-	},
-	{
-		preId: "fourteenthDay",
-		rule: "before",
-		postId: "twilight",
-		error: "twilight is only important on the fourteenth day"
+		error: "each family must slaughter their lamb after twilight"
 	},
 	{
 		preId: "communityMembers",
@@ -297,6 +270,12 @@ passoverRules = [
 		rule: "hasChild",
 		postId: "doorpostHasBlood",
 		error: "God checks the blood on the doorpost for each family in Egypt"
+	},
+	{
+		preId: "egyptFamilies",
+		rule: "hasChild",
+		postId: "strikeDown",
+		error: "God pronounces judgement for each family in Egypt"
 	},
 	{
 		preId: "doorpostHasBlood",

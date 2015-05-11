@@ -7,9 +7,9 @@ app.controller('ConversationController', ['$scope', function($scope) {
 		vm.initTextField();
 		vm.curCommand = {};
 		vm.curCommand.text = "";
-		vm.conversationHappening = false;
+		vm.o.conversationHappening = false;
 		if (vm.o.startConvoNow) {
-			vm.codeCompiles = true;
+			vm.o.codeCompiles = true;
 			setTimeout(function(){
 				vm.startConvo();
 			}, 2000);
@@ -18,25 +18,25 @@ app.controller('ConversationController', ['$scope', function($scope) {
 
 	vm.reinit = function() {
 		vm.clearInput();
-		vm.conversationHappening = false;
+		vm.o.conversationHappening = false;
 	}
 
 	// start the conversation for this level
 	vm.startConvo = function() {
 		// don't start unless the code works and you haven't started yet
-		if (!vm.codeCompiles || vm.conversationHappening) return;
+		if (!vm.o.codeCompiles || vm.o.conversationHappening) return;
 		console.log("starting convo for level", vm.o.level);
 		if (vm.o.level == 1) {
 			vm.convObj = serpentObj;
 			vm.curStatement = serpentStart;
-			vm.respondAndAsk("");
-			vm.conversationHappening = true;
+			vm.respondAndAsk("", true);
+			vm.o.conversationHappening = true;
 		}
 		if (vm.o.level == 2) {
 			vm.convObj = desertObj;
 			vm.curStatement = desertStart;
-			vm.respondAndAsk("");
-			vm.conversationHappening = true;
+			vm.respondAndAsk("", true);
+			vm.o.conversationHappening = true;
 		}
 	}
 
@@ -73,7 +73,7 @@ app.controller('ConversationController', ['$scope', function($scope) {
 		$("#command-input").keypress(function(event) {
 			// ENTER / RETURN
 		  if (event.which == 13) {
-		  	if (vm.conversationHappening) {
+		  	if (vm.o.conversationHappening) {
 			  	vm.questionAnswer();
 			  }
 			  else {
@@ -120,7 +120,7 @@ app.controller('ConversationController', ['$scope', function($scope) {
 		// append question text
 		var qText = stObj.qText;
 		var options = " [y/n]";
-		if (stObj.bothResp) options = " ";
+		if ("bothResp" in stObj) options = " ";
 		return qText + options;
 	}
 
@@ -146,11 +146,13 @@ app.controller('ConversationController', ['$scope', function($scope) {
 		var statement = vm.curStatement;
 		var stObj = vm.convObj[statement];
 		var responseStr = "";
-		if (stObj.bothResp) {
-			vm.curStatement = stObj.bothNext;
+		if ("bothResp" in stObj) {
+			vm.curStatement = stObj.nextQ;
+			// special cases
+			vm.onStatementChange();
 			return "<br>" + stObj.bothResp;
 		}
-		if (response == "") {
+		else if (response == "") {
 			return "";
 		}
 		else {
@@ -190,9 +192,13 @@ app.controller('ConversationController', ['$scope', function($scope) {
 	}
 
 	// generate next set of response and question in the conversation
-	vm.respondAndAsk = function(response) {
-		// respond to previous answer
-		var responseStr = vm.applyResponse(response);
+	vm.respondAndAsk = function(response, noRespond) {
+		console.log("curStatement:", vm.curStatement);
+		// respond to previous answer if we should
+		if (noRespond === undefined || noRespond === false) {
+			var responseStr = vm.applyResponse(response);
+		}
+		else var responseStr = "";
 		// stop if we switched to the last statement
 		if (vm.curStatement === "(end)") return;
 		// append optional pre-text
@@ -204,7 +210,8 @@ app.controller('ConversationController', ['$scope', function($scope) {
 		var responseP = $("<span>").html(statementStr);
 		vm.moveOutInputContent();
 		$("#pre-input-content").append(responseP);
-		if (response !== "") vm.scrollDown(responseP.height());
+		if (noRespond === undefined || noRespond === false)
+			vm.scrollDown(responseP.height());
 	}
 
 	vm.moveOutInputContent = function() {
@@ -253,6 +260,9 @@ app.controller('ConversationController', ['$scope', function($scope) {
 		}
 		else if (noAnswers.indexOf(answer) !== -1) {
 			vm.respondAndAsk("n");
+		}
+		else if ("bothResp" in vm.convObj[vm.curStatement]) {
+			vm.respondAndAsk("");
 		}
 		else {
 			vm.moveOutInputContent();

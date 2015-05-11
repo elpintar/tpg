@@ -5,7 +5,7 @@ app.controller('FullScreenController', ['$scope', function($scope) {
 
 	vm.tryTransition = function() {
 		// stop if the code doesn't compile yet
-		if (!vm.codeCompiles) return;
+		if (!vm.o.codeCompiles) return;
 		originsTransition(function() {
 			vm.o.level = 1;
 			console.log("lower vm.level is", vm.o.level);

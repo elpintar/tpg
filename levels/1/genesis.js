@@ -116,25 +116,26 @@ genesisRules = [
 		preId: "work",
 		rule: "hasChild",
 		postId: "animal",
-		error: "animal must be chosen when Adam is at work"
+		error: "animal must be chosen when Adam is working to name animals"
 	},
 	{
 		preId: "work",
 		rule: "hasChild",
 		postId: "callName",
-		error: "animals must be named when Adam is at work"
+		error: "animals must be named only while Adam is working to name them"
 	},
 	{
 		preId: "work",
 		rule: "hasChild",
 		postId: "alone",
-		error: "adam gets lonely after a certain amount of work"
+		error: "Adam gets lonely while working to name animals " +
+					 "and needs a helper"
 	},
 	{
 		preId: "alone",
 		rule: "hasChild",
 		postId: "aloneBreak",
-		error: "need to stop working when Adam gets lonely"
+		error: "Adam must break from working to gain a suitable helper"
 	},
 	{
 		preId: "sleep",
@@ -146,13 +147,13 @@ genesisRules = [
 		preId: "sleep",
 		rule: "hasChild",
 		postId: "sleepBreak",
-		error: "adam does not wake up"
+		error: "Adam does not wake up"
 	},
 	{
 		preId: "eve",
 		rule: "before",
 		postId: "sleepBreak",
-		error: "Adam wakes up before Eve can be created"
+		error: "rib can only be extracted when Adam is asleep"
 	},
 ]
 

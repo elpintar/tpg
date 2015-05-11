@@ -189,6 +189,10 @@ $darkButton: #252525;
 	}
 }
 
+#prompt.content-body {
+	word-wrap: break-word;
+}
+
 #input-field span {
 	word-wrap: break-word;
 	white-space: pre;

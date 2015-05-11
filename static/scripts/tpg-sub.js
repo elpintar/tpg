@@ -8,19 +8,18 @@ app.controller('CodeController', ['$scope', function($scope) {
 	vm.init = function() {
 		// vm.o is an object to be shared across controllers
 		vm.o = {};
-		vm.o.level = 2;
+		vm.o.level = 0;
 		vm.o.conversationHappening = false;
 		vm.initCodeFor = vm.o.level;
 		vm.initLevel();
 		// "cheat codes"
-		vm.o.startConvoNow = true; // starts convo right away
+		vm.o.startConvoNow = false; // starts convo right away
 		vm.cheat = false; // displays all key phrases
 	};
 
 	vm.initLevel = function() {
 		console.log("initLevel", vm.o.level);
 		vm.o.codeCompiles = false;
-		customHide($("#"+vm.codeRunId));
 		vm.o.conversationHappening = false;
 		vm.sectionLinkCounts = {};
 		vm.sectionLinksFound = {};
@@ -128,6 +127,7 @@ app.controller('CodeController', ['$scope', function($scope) {
 			if (secFoundIds.indexOf(id) === -1) {
 				secFoundIds.push(id);
 				// reveal next section if all in this one found
+				console.log(sectionId, vm.sectionLinkCounts[sectionId]);
 				if (secFoundIds.length === vm.sectionLinkCounts[sectionId]) {
 					var secIdEnd = sectionId.substring(
 						"section-0-".length, sectionId.length);
@@ -277,6 +277,7 @@ app.controller('CodeController', ['$scope', function($scope) {
 		var line = linkObj["lineObj"];
 		var elemId = "li_" + id;
 		// add the line to the end of the main function
+		console.log("adding", line, elemId, vm.codeAddToSelector);
 		vm.addLine(line, elemId, $(vm.codeAddToSelector));
 	}
 
@@ -326,10 +327,17 @@ app.controller('CodeController', ['$scope', function($scope) {
 		// get rid of previous error highlighting
 		$(".hasError").removeClass("hasError");
 		// check for errors
+		var prevId = "";
 		for (var i = 0; i < codeTree.length; i++) {
 			var codeLine = codeTree[i];
 			var curId = codeLine.item_id;
-			var parentIds = codeLine.parent_id;
+			if (parentIds.indexOf(prevId) === -1) {
+				// parent is 
+				var parentIds = [codeLine.parent_id];
+			}
+			else {
+				
+			}
 			curDepth = codeLine.depth;
 			// do checks here
 			for (var j = 0; j < vm.rules.length; j++) {
@@ -341,7 +349,6 @@ app.controller('CodeController', ['$scope', function($scope) {
 					  rule.postId == curId && rule.preId != parentIds)) {
 					if (missingRuleIds(rule) === "") {
 						var errStr = (vm.fileName + ": error: " + rule.error);
-						errStr = errStr + "<br>&nbsp;";
 					}
 					else {
 						var errStr = (vm.fileName + ": error: missing " +
@@ -358,6 +365,7 @@ app.controller('CodeController', ['$scope', function($scope) {
 				$("#li_"+curId).addClass("hasError");
 				break;
 			}
+			prevId = curId;
 		}
 		// check for missing elements if everything else is good
 		var shuffledLineLinks = shuffleArray(codeIds);
