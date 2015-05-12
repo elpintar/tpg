@@ -14,7 +14,7 @@ for family in israelites:
 time.waitFor(time.twilight)
 
 for family in israelites:
-	family.lamb.slaughter()
+	family.lamb.sacrifice()
 	family.doorpost.smear(family.lamb.blood)
 	family.eat(family.lamb, "quickly")
 
@@ -22,7 +22,7 @@ time.waitFor(time.midnight)
 
 for family in egypt:
 	if (family.doorpost.hasBlood):
-		God.passOver()
+		God.passOver(family)
 	else:
 		God.kill(family.firstborn)
 		God.kill(family.animals.firstborn)

@@ -16,7 +16,7 @@ app.controller('ConversationController', ['$scope', function($scope) {
 		}
 	};
 
-	vm.reinit = function() {
+	vm.clearConvo = function() {
 		vm.clearInput();
 		vm.o.conversationHappening = false;
 	}
@@ -35,6 +35,21 @@ app.controller('ConversationController', ['$scope', function($scope) {
 		if (vm.o.level == 2) {
 			vm.convObj = desertObj;
 			vm.curStatement = desertStart;
+			vm.respondAndAsk("", true);
+			vm.o.conversationHappening = true;
+		}
+		if (vm.o.level == 3) {
+			$("#full-screen-container").fadeOut(2000, function() {
+				setTimeout(function() {
+					vm.o.level = 4;
+					vm.initLevel();
+					vm.clearConvo();
+				}, 2000);
+			});
+		}
+		if (vm.o.level == 4) {
+			vm.convObj = endConvoObj;
+			vm.curStatement = endConvoStart;
 			vm.respondAndAsk("", true);
 			vm.o.conversationHappening = true;
 		}
@@ -127,16 +142,35 @@ app.controller('ConversationController', ['$scope', function($scope) {
 	// check for a special case!
 	vm.onStatementChange = function() {
 		var newStatement = vm.curStatement;
+		// serpent
 		if (vm.o.level === 1) {
 			if (newStatement === "delightful") {
 				appleOverlay();
 			}
+			else if (newStatement === "appleBit") {
+				sinEntersTheWorld();
+			}
 			else if (newStatement === "(end)") {
-				sinEntersTheWorld(function(){
-					vm.o.level = 2;
-					vm.initLevel();
-					vm.reinit();
+				vm.o.level = 2;
+				vm.initLevel();
+				vm.clearConvo();
+			}
+		}
+		// desert
+		else if (vm.o.level === 2) {
+			if (newStatement === "(end)") {
+				vm.clearConvo();
+				$("#full-screen-container").fadeIn(2000, function() {
+					setTimeout(function() {
+						vm.o.level = 3;
+						vm.initLevel();
+					}, 2000);
 				});
+			}
+		}
+		else if (vm.o.level === 4) {
+			if (newStatement === "(end)") {
+				customShow($("#ending-container"));
 			}
 		}
 	}
@@ -193,7 +227,6 @@ app.controller('ConversationController', ['$scope', function($scope) {
 
 	// generate next set of response and question in the conversation
 	vm.respondAndAsk = function(response, noRespond) {
-		console.log("curStatement:", vm.curStatement);
 		// respond to previous answer if we should
 		if (noRespond === undefined || noRespond === false) {
 			var responseStr = vm.applyResponse(response);

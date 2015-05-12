@@ -9,7 +9,6 @@ genesisInitLines = [
 	 id: "main"}
 ]
 
-
 genesisObj = {
 	"eden": {
 		key: "Garden of Eden",
@@ -128,8 +127,7 @@ genesisRules = [
 		preId: "work",
 		rule: "hasChild",
 		postId: "alone",
-		error: "Adam gets lonely while working to name animals " +
-					 "and needs a helper"
+		error: "Adam gets lonely only while he is working to name animals"
 	},
 	{
 		preId: "alone",

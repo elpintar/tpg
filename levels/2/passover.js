@@ -44,7 +44,7 @@ passoverObj = {
 	},
 	"slaughter": {
 		key: "slaughter them",
-		lineObj: {code: "family.lamb.slaughter()"},
+		lineObj: {code: "family.lamb.sacrifice()"},
 	},
 	"bloodOnDoor": {
 		key: "take some of the blood and put it on the"+
@@ -67,7 +67,7 @@ passoverObj = {
 	"doorpostHasBlood": {
 		key: "when I see the blood, I will pass over you",
 		lineObj: {code: "if (family.doorpost.hasBlood):",
-							midCode: [{code: "God.passOver()",
+							midCode: [{code: "God.passOver(family)",
 												 id: "GodPassOver"}],
 							endCode: ""},
 	},
@@ -107,110 +107,6 @@ passoverObj = {
 
 passoverRules = [
 	{
-		preId: "israelites",
-		rule: "before",
-		postId: "moses",
-		error: "the Israelites do not exist for Moses to be their leader"
-	},
-	{
-		preId: "israelites",
-		rule: "before",
-		postId: "eachHousehold",
-		error: "the Israelites do not exist to have families"
-	},
-	{
-		preId: "egypt",
-		rule: "before",
-		postId: "egyptFamilies",
-		error: "Egypt does not exist to have families"
-	},
-	{
-		preId: "egypt",
-		rule: "before",
-		postId: "permission",
-		error: "Egypt does not exist to give permission"
-	},
-	{
-		preId: "moses",
-		rule: "before",
-		postId: "obeyMoses",
-		error: "Moses does not exist to be obeyed"
-	},
-	{
-		preId: "moses",
-		rule: "before",
-		postId: "obeyGod",
-		error: "Moses does not exist to obey God"
-	},
-	{
-		preId: "twilight",
-		rule: "before",
-		postId: "midnight",
-		error: "twilight comes before midnight"
-	},
-	{
-		preId: "noDefects",
-		rule: "before",
-		postId: "lamb",
-		error: "lambs do not exist to be chosen from"
-	},
-	{
-		preId: "slaughter",
-		rule: "before",
-		postId: "bloodOnDoor",
-		error: "lamb must be slaughtered before using its blood"
-	},
-	{
-		preId: "slaughter",
-		rule: "before",
-		postId: "eatLamb",
-		error: "lamb must be killed before being eaten"
-	},
-	{
-		preId: "bloodOnDoor",
-		rule: "before",
-		postId: "eatLamb",
-		error: "blood must be put on door before eating the lamb"
-	},
-	{
-		preId: "egyptFamilies",
-		rule: "before",
-		postId: "judgment",
-		error: "God's judgment is only complete after killing the firstborn of Egypt"
-	},
-	{
-		preId: "doorpostHasBlood",
-		rule: "before",
-		postId: "strikeDown",
-		error: "God first checks if the family is covered by the blood of the lamb "+
-					 "before striking down the firstborn"
-	},	
-	{
-		preId: "judgment",
-		rule: "before",
-		postId: "permission",
-		error: "Egypt only gives permission after God's judgment is complete"
-	},
-	{
-		preId: "obeyMoses",
-		rule: "before",
-		postId: "deliver",
-		error: "the people of Israel must obey before they can be delivered"
-	},
-	{
-		preId: "obeyGod",
-		rule: "before",
-		postId: "deliver",
-		error: "Moses must obey God before the people can be delivered"
-	},
-	{
-		preId: "permission",
-		rule: "before",
-		postId: "deliver",
-		error: "Israel can only be fully delivered after leaving egypt"
-	},
-
-	{
 		preId: "eachHousehold",
 		rule: "hasChild",
 		postId: "noDefects",
@@ -223,29 +119,10 @@ passoverRules = [
 		error: "a lamb must be chosen for each family"
 	},
 	{
-		preId: "twilight",
-		rule: "before",
-		postId: "communityMembers",
-		error: "each family must slaughter their lamb after twilight"
-	},
-	{
-		preId: "communityMembers",
-		rule: "before",
-		postId: "midnight",
-		error: "each family must act before "+
-					 "the end of the fourteenth day"
-	},
-	{
-		preId: "twilight",
-		rule: "before",
-		postId: "communityMembers",
-		error: "each family must act after twilight"
-	},
-	{
 		preId: "communityMembers",
 		rule: "hasChild",
 		postId: "slaughter",
-		error: "the lamb must be slaughtered for each family"
+		error: "the lamb must be sacrificed for each family"
 	},
 	{
 		preId: "communityMembers",
@@ -308,6 +185,130 @@ passoverRules = [
 		rule: "hasChild",
 		postId: "leaveEgypt",
 		error: "the Israelites can't leave without permission"
+	},
+
+
+	{
+		preId: "israelites",
+		rule: "before",
+		postId: "moses",
+		error: "the Israelites do not exist for Moses to be their leader"
+	},
+	{
+		preId: "israelites",
+		rule: "before",
+		postId: "eachHousehold",
+		error: "the Israelites do not exist to have families"
+	},
+	{
+		preId: "egypt",
+		rule: "before",
+		postId: "egyptFamilies",
+		error: "Egypt does not exist to have families"
+	},
+	{
+		preId: "egypt",
+		rule: "before",
+		postId: "permission",
+		error: "Egypt does not exist to give permission"
+	},
+	{
+		preId: "moses",
+		rule: "before",
+		postId: "obeyMoses",
+		error: "Moses does not exist to be obeyed"
+	},
+	{
+		preId: "moses",
+		rule: "before",
+		postId: "obeyGod",
+		error: "Moses does not exist to obey God"
+	},
+	{
+		preId: "twilight",
+		rule: "before",
+		postId: "midnight",
+		error: "twilight comes before midnight"
+	},
+	{
+		preId: "noDefects",
+		rule: "before",
+		postId: "lamb",
+		error: "lambs do not exist to be chosen from"
+	},
+	{
+		preId: "slaughter",
+		rule: "before",
+		postId: "bloodOnDoor",
+		error: "lamb must be sacrificed before using its blood"
+	},
+	{
+		preId: "slaughter",
+		rule: "before",
+		postId: "eatLamb",
+		error: "lamb must be sacrificed before being eaten"
+	},
+	{
+		preId: "bloodOnDoor",
+		rule: "before",
+		postId: "eatLamb",
+		error: "blood must be put on door before eating the lamb"
+	},
+	{
+		preId: "egyptFamilies",
+		rule: "before",
+		postId: "judgment",
+		error: "God's judgment is only complete after killing the firstborn of Egypt"
+	},
+	{
+		preId: "doorpostHasBlood",
+		rule: "before",
+		postId: "strikeDown",
+		error: "God first checks if the family is covered by the blood of the lamb "+
+					 "before striking down the firstborn"
+	},	
+	{
+		preId: "judgment",
+		rule: "before",
+		postId: "permission",
+		error: "Egypt only gives permission after God's judgment is complete"
+	},
+	{
+		preId: "obeyMoses",
+		rule: "before",
+		postId: "deliver",
+		error: "the people of Israel must obey before they can be delivered"
+	},
+	{
+		preId: "obeyGod",
+		rule: "before",
+		postId: "deliver",
+		error: "Moses must obey God before the people can be delivered"
+	},
+	{
+		preId: "permission",
+		rule: "before",
+		postId: "deliver",
+		error: "Israel can only be fully delivered after leaving egypt"
+	},
+	{
+		preId: "twilight",
+		rule: "before",
+		postId: "communityMembers",
+		error: "each family must sacrifice their lamb after twilight"
+	},
+	{
+		preId: "communityMembers",
+		rule: "before",
+		postId: "midnight",
+		error: "each family must act before "+
+					 "the end of the fourteenth day"
+	},
+	{
+		preId: "twilight",
+		rule: "before",
+		postId: "communityMembers",
+		error: "each family must act after twilight"
 	},
 ]
 

@@ -35,16 +35,11 @@ def textMaker(s):
 	pyperclip.copy(textS)
 
 
-textMaker("""The future generations of Israel settle in the land by the power of the Lord, who sustains them through many hardships and difficulties.
+textMaker("""Good to hear.  Know that there is even more depth than you can imagine and so much meaning yet to be discovered.
 
-But for the next thousand years will be many signs ... prophecies of a coming time, given by prophets of the Lord.
-
-Of what do these prophecies foretell?
+And the story is not yet finished...
 
 """)
-
-
-
 
 
 

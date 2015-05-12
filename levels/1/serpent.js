@@ -91,12 +91,12 @@ var serpentObj = {
 			"having the power of the knowledge of good and evil.<br><br>"+
 			"No longer will you need to follow him blindly, "+
 			"but you could make your own decisions, with your own knowledge, "+
-			"and your own judgement.  You shall be that much more "+
+			"and your own judgement.  You shall be "+
 			"like God himself.<br><br>"+
 			"What are you waiting for!  Take a bite.<br><br>",
 		qText: "Bite the fruit?",
 		yResp: "",
-		yNext: "(end)",
+		yNext: "appleBit",
 		nResp: "",
 		nextQ: "die"
 	},
@@ -108,7 +108,7 @@ var serpentObj = {
 			"you could ever know without it.<br><br>",
 		qText: "Bite the fruit?",
 		yResp: "",
-		yNext: "(end)",
+		yNext: "appleBit",
 		nResp: "",
 		nNext: "worldOpened"
 	},
@@ -124,7 +124,7 @@ var serpentObj = {
 			"the world will be opened to you.<br><br>",
 		qText: "Bite the fruit?",
 		yResp: "",
-		yNext: "(end)",
+		yNext: "appleBit",
 		nResp: "",
 		nNext: "exhausted"
 	},
@@ -135,8 +135,58 @@ var serpentObj = {
 			"The fruit is bitten, "+
 			"and what happens next is vitally important.<br><br>",
 		qText: "Press enter to continue.",
-		bothResp: "(end)",
-		nextQ: "(end)"
+		bothResp: "",
+		nextQ: "appleBit"
+	},
+
+	"appleBit": {
+		preText: "error: eden.c: assertion failure<br><br>"+
+      "assert(adam->eat(theTree->fruit) == false);<br><br>",
+    qText: "Press enter.",
+    bothResp: "",
+    nextQ: "sinStart"
+	},
+	"sinStart": {
+		preText: "And with that first act of rebellion, mankind gained "+
+      "knowledge, but were separated from their Creator.<br><br>"+
+      "Adam and Eve were banished from the garden, never to "+
+      "return.<br><br>Their children continued to rebel against "+
+      "God.<br><br>The earth grew corrupt and was flooded by "+
+      "God in his judgement.<br><br>Later, the people built a "+
+      "tower to reach heaven on their own merit, but God "+
+      "confused them with creating all different languages.<br>"+
+      "<br>",
+    qText: "Press enter to apply the language change.",
+    bothResp: "",
+    nextQ: "pythonChange"
+	},
+	"pythonChange": {
+		preText: "language changed: python<br><br>The human race had "+
+      "bought into the lie of the serpent:<br><br>we could be "+
+      "God.<br><br>God saw the evil inclinations of the human "+
+      "heart and regretted making human beings on the earth.<br>"+
+      "<br>",
+    qText: "Press enter to continue.",
+    bothResp: "",
+    nextQ: "goodPeople"
+	},
+	"goodPeople": {
+		preText: "However, there were men that found favor in the eyes of "+
+      "the Lord.<br><br>Abraham, Isaac, and Jacob.<br><br>From "+
+      "these forefathers came the nation of Israel, God's "+
+      "chosen people on the earth.<br><br>",
+    qText: "Press enter to continue.",
+    bothResp: "",
+    nextQ: "toEgypt",
+	},
+	"toEgypt": {
+		preText: "Years later, God's people are under Pharoah's captivity "+
+      "in Egypt as slaves.<br><br>But God has a plan, and has "+
+      "chosen a faithful servant to deliver his people...<br>"+
+      "<br>",
+    qText: "Press enter to continue.",
+    bothResp: "",
+    nextQ: "(end)"
 	}
 }
 

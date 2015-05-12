@@ -232,7 +232,7 @@ $darkButton: #252525;
 // FULL SCREEN STYLES
 
 #full-screen-container {
-	position: fixed;
+	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100%;
@@ -243,7 +243,8 @@ $darkButton: #252525;
 	#content-container {
 		text-align: center;
 		padding-top: 1em;
-		padding-bottom: 3em;
+		padding-bottom: 2em;
+		background-color: black;
 		h1 {
 			font-size: 45px;
 			margin: 1em 0em;
@@ -263,7 +264,7 @@ $darkButton: #252525;
 #scripture-full-screen, 
 #code-full-screen {
 	width: 400px;
-	height: 400px;
+	height: 430px;
 	padding: 20px;
 	text-align: left;
 	display: inline-block;
@@ -358,7 +359,53 @@ $darkButton: #252525;
 	}
 }
 
+// ENDING SCREEN
 
+#ending-container {
+	@include hiddenTransition();
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	min-height: 700px;
+	background-color: black;
+	color: darken($whitegray, 10%);
+	#ending-content-container {
+		text-align: center;
+		padding-top: 1em;
+		padding-bottom: 2em;
+		background-color: black;
+		h1 {
+			font-size: 45px;
+			margin: 1em 0em;
+		}
+		#up-to {
+			font-family: dayRoman, Times, serif;
+			font-size: 28px;
+			margin-bottom: 1.5em;
+		}
+		#you-container {
+			@include hiddenTransition();
+			font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;
+		}
+		div {
+			margin-top: 1em;
+			margin-bottom: 1em;
+			text-align: center;
+			font-size: 28px;
+			color: darken(white, 15%);
+			a {
+				text-decoration: none;
+				color: darken(white, 15%);
+				&:hover {
+					cursor: pointer;
+					color: white;
+				}
+			}
+		}
+	}
+}
 
 
 

@@ -8,12 +8,12 @@ app.controller('CodeController', ['$scope', function($scope) {
 	vm.init = function() {
 		// vm.o is an object to be shared across controllers
 		vm.o = {};
-		vm.o.level = 2;
+		vm.o.level = 1;
 		vm.o.conversationHappening = false;
 		vm.initCodeFor = vm.o.level;
 		vm.initLevel();
 		// "cheat codes"
-		vm.o.startConvoNow = true; // starts convo right away
+		vm.o.startConvoNow = false; // starts convo right away
 		vm.cheat = false; // displays all key phrases
 	};
 
@@ -73,6 +73,33 @@ app.controller('CodeController', ['$scope', function($scope) {
 			vm.fileName = "egypt.py";
 			vm.rules = passoverRules;
 		}
+		if (vm.o.level == 3) {
+			$("#full-screen-container").show();
+			vm.scriptureId = "scripture-full-screen";
+			vm.scriptDiv = $("#"+vm.scriptureId);
+			vm.codeId = "code-full-screen";
+			vm.codeDiv = $("#"+vm.codeId);
+			vm.codeAddToSelector = "#"+vm.codeId;
+			vm.codeRunId = "code-run-area-full-screen";
+			vm.errorMsgContainer = $("#error-message-full-screen");
+			vm.lineLinks = theWordObj;
+			vm.initLines = theWordInitLines;
+			vm.fileName = "theWord.py";
+			vm.rules = theWordRules;
+		}
+		else if (vm.o.level == 4) {
+			vm.scriptureId = "scripture";
+			vm.scriptDiv = $("#"+vm.scriptureId);
+			vm.codeId = "code";
+			vm.codeDiv = $("#"+vm.codeId);
+			vm.codeAddToSelector = "#"+vm.codeId;
+			vm.codeRunId = "code-run-area";
+			vm.errorMsgContainer = $("#prompt-error-message");
+			vm.lineLinks = gospelObj;
+			vm.initLines = gospelInitLines;
+			vm.fileName = "gospel.py";
+			vm.rules = gospelRules;
+		}
 		// if we need to init the code for this level, do so
 		if (vm.initCodeFor !== vm.o.level)
 			vm.initCodeLinks();
@@ -85,7 +112,7 @@ app.controller('CodeController', ['$scope', function($scope) {
 			var linkObj = lineLinks[id];
 			// look for code key in each paragraph
 			var foundKey = false;
-			$("#"+vm.scriptureId+" p").each(function(index){
+			$("#"+vm.scriptPsId+" p").each(function(index){
 				var sp = $(this);
 				var aTag = ("<a id='{0}'>{1}</a>");
 				var key = linkObj["key"];
@@ -99,7 +126,7 @@ app.controller('CodeController', ['$scope', function($scope) {
 				}
 			});
 			// count how many code links in each section
-			$("#"+vm.scriptureId+" .section").each(function(index){
+			$("#"+vm.scriptPsId+" .section").each(function(index){
 				var sectionId = $(this).attr("id");
 				vm.sectionLinkCounts[sectionId] = $("#"+sectionId+" a").length;
 				vm.sectionLinksFound[sectionId] = [];
@@ -110,13 +137,13 @@ app.controller('CodeController', ['$scope', function($scope) {
 			});
 		}
 		// CLICK a key phrase
-		$("#"+vm.scriptureId+" p a").click(function() {
+		$("#"+vm.scriptPsId+" p a").click(function() {
 			var id = $(this).attr("id");
 			vm.addLinesForLink(id);
 			$("#li_"+id).addClass("isHighlighted");
 		});
 		// HOVER over a key phrase
-		$("#"+vm.scriptureId+" p a").mouseenter(function() {
+		$("#"+vm.scriptPsId+" p a").mouseenter(function() {
 			$(this).addClass("found");
 			var id = $(this).attr("id");
 			// add it to the code when you mouse over it
@@ -135,9 +162,13 @@ app.controller('CodeController', ['$scope', function($scope) {
 					var nextSectionId = "section-" + vm.o.level.toString() +
 						"-" + (secNum + 1).toString();
 					customShow($("#"+nextSectionId));
+					// COMMENT OUT
+					// $(".section").each(function() {
+					// 	customShow($(this));
+					// });
 					// all words are uncovered - ripple effect
 					if ($("#"+nextSectionId).length === 0) {
-						rippleScriptureAnimation(vm.scriptureId);
+						rippleScriptureAnimation(vm.scriptPsId);
 						// show code button 2 sec later
 						setTimeout(function() {
 							customShow($("#"+vm.codeRunId));
@@ -153,20 +184,23 @@ app.controller('CodeController', ['$scope', function($scope) {
 			}
 		});
 		// LEAVE HOVER on a key phrase
-		$("#"+vm.scriptureId+" p a").mouseleave(function() {
+		$("#"+vm.scriptPsId+" p a").mouseleave(function() {
 			var id = $(this).attr("id");
 			$("#li_"+id).removeClass("isHighlighted");
 		});
-		if (vm.cheat) $("#"+vm.scriptureId+" p a").css("color", "gray");
+		if (vm.cheat) $("#"+vm.scriptPsId+" p a").css("color", "blue");
 		// mark completed
 		vm.initCodeFor = vm.o.level;
 	};
 
 	vm.initCodeScreen = function() {
-		// make the code a sortable list!!
+		// clear old code and conversation
 		vm.codeDiv.empty();
 		$("#conversation-content").empty();
 		$("#pre-input-content").empty();
+		// make sure you only show this current scripture
+		vm.showRightScripture();
+		// make the code a sortable list - nice module feature
 		vm.codeDiv.nestedSortable({
 			handle: 'div',
 			items: 'li',
@@ -199,8 +233,6 @@ app.controller('CodeController', ['$scope', function($scope) {
 			var elemId = "li_init" + i.toString();
 			vm.addLine(line, elemId);
 		}
-		// actually show the scripture!
-		vm.showRightScripture();
 		// show code, fade in
 		setTimeout(function() {
 			customShow(vm.codeDiv);
@@ -212,14 +244,21 @@ app.controller('CodeController', ['$scope', function($scope) {
 			$(this).hide();
 		});
 		if (vm.o.level == 0) {
-			$("#origins-scripture").show();
+			vm.scriptPsId = "origins-scripture";
 		}
 		else if (vm.o.level == 1) {
-			$("#genesis-scripture").show();
+			vm.scriptPsId = "genesis-scripture";
 		}
 		else if (vm.o.level == 2) {
-			$("#passover-scripture").show();
+			vm.scriptPsId = "passover-scripture";
 		}
+		else if (vm.o.level == 3) {
+			vm.scriptPsId = "the-word-scripture";
+		}
+		else if (vm.o.level == 4) {
+			vm.scriptPsId = "gospel-scripture";
+		}
+		$("#"+vm.scriptPsId).show();
 	}		
 
 	vm.addLine = function(line, elemId, appendElem) {
@@ -307,6 +346,10 @@ app.controller('CodeController', ['$scope', function($scope) {
 		var errors = $("<div>");
 		errors.attr("id", "errors");
 		var missingError = false;
+		// only gets the first error
+		var oldErrorStr = vm.errorMsgContainer.children("#errors")
+																			 .children("p").html();
+		console.log("oldErrorStr", oldErrorStr);
 		// get all codeIds
 		var codeIds = [];
 		for (lineId in vm.lineLinks) {codeIds.push(lineId)};
@@ -325,28 +368,82 @@ app.controller('CodeController', ['$scope', function($scope) {
 		}
 		// get rid of previous error highlighting
 		$(".hasError").removeClass("hasError");
-		// check for errors
+		// look at lines of code in order
 		for (var i = 0; i < codeTree.length; i++) {
 			var codeLine = codeTree[i];
 			var curId = codeLine.item_id;
-			var parentIds = codeLine.parent_id;
+			var parentId = codeLine.parent_id;
 			curDepth = codeLine.depth;
-			// do checks here
+			var hasErrorType = "no error";
+			// do checks here - hasChild first, then before
 			for (var j = 0; j < vm.rules.length; j++) {
+				if (hasErrorType !== "no error") break;
 				var rule = vm.rules[j];
 				// check if any rule is broken
-				if ((rule.rule == "before" && 
-						 rule.postId == curId && seenIds.indexOf(rule.preId) == -1) ||
-						(rule.rule == "hasChild" &&
-					  rule.postId == curId && rule.preId != parentIds)) {
+				if (rule.rule == "hasChild" &&
+					  rule.postId == curId && rule.preId != parentId) {
 					if (missingRuleIds(rule) === "") {
 						var errStr = (vm.fileName + ": error: " + rule.error);
 						errStr = errStr + "<br>&nbsp;";
+						// made same mistake - offer hint
+						if (oldErrorStr === errStr) {
+							if (curId.length % 2 === 0)
+								var hint = "(Try moving the " + rule.postId +
+									" line within the " + rule.preId + " part of code.)";
+							else
+								var hint = "(The " + rule.postId + " line makes most " +
+									"sense inside the " + rule.preId + " part of code.)";
+							errStr = errStr.replace("&nbsp;", hint + "<br>");
+						}
+						hasErrorType = "hasChild";
 					}
 					else {
 						var errStr = (vm.fileName + ": error: missing " +
 						              missingRuleIds(rule) + " line in file.");
+						// made same mistake - offer hint
+						if (oldErrorStr === errStr) {
+							var hint = "(Look for a line related to a "+
+								missingRuleIds(rule) + " line in the text.)";
+							errStr = errStr + "<br>" + hint;
+						}
 						missingError = true;
+						hasErrorType = "missing";
+					}
+					vm.addPtoElem(errStr, errors);
+				}
+			}
+			for (var j = 0; j < vm.rules.length; j++) {
+				if (hasErrorType !== "no error") break;
+				var rule = vm.rules[j];
+				// check if before rule is broken
+				if (rule.rule == "before" && 
+						rule.postId == curId && seenIds.indexOf(rule.preId) == -1) {
+					if (missingRuleIds(rule) === "") {
+						var errStr = (vm.fileName + ": error: " + rule.error);
+						errStr = errStr + "<br>&nbsp;";
+						// made same mistake - offer hint
+						if (oldErrorStr === errStr) {
+							if (curId.length % 2 == 0)
+								var hint = "(The " + curId +
+									" line makes sense somewhere later in the code.)";
+							else
+								var hint = "(Try moving the " + curId +
+									" line to a logical place further down in the code.)";
+							errStr = errStr.replace("&nbsp;", hint + "<br>");
+						}
+						hasErrorType = "before";
+					}
+					else {
+						var errStr = (vm.fileName + ": error: missing " +
+						              missingRuleIds(rule) + " line in file.");
+						// made same mistake - offer hint
+						if (oldErrorStr === errStr) {
+							var hint = "(Look for a line related to a "+
+								missingRuleIds(rule) + " line in the text.)";
+							errStr = errStr + "<br>" + hint;
+						}
+						missingError = true;
+						hasErrorType = "missing";
 					}
 					vm.addPtoElem(errStr, errors);
 				}
@@ -354,20 +451,21 @@ app.controller('CodeController', ['$scope', function($scope) {
 			seenIds.push(curId);
 			prevDepth = curDepth;
 			// found error(s) on this line! code crashes and breaks
-			if (errors.contents().length > 0) {
+			if (hasErrorType !== "no error") {
 				$("#li_"+curId).addClass("hasError");
 				break;
 			}
 		}
 		// check for missing elements if everything else is good
 		var shuffledLineLinks = shuffleArray(codeIds);
-		if (errors.children().length == 0) {
+		if (hasErrorType === "no error") {
 			for (var i = shuffledLineLinks.length - 1; i >= 0; i--) {
 				lineId = shuffledLineLinks[i];
 				if (seenIds.indexOf(lineId) == -1) {
 					var errStr = (vm.fileName + ":" + " error: missing " +
 						lineId + " line in file.");
 					missingError = true;
+					hasErrorType = "missing"
 					vm.addPtoElem(errStr, errors);
 					break;
 				}
@@ -375,7 +473,7 @@ app.controller('CodeController', ['$scope', function($scope) {
 		}
 		vm.errorMsgContainer.empty();
 		$("#conversation-content").empty();
-		if (errors.children().length == 0) {
+		if (hasErrorType === "no error") {
 			vm.o.codeCompiles = true;
 		}
 		else {
@@ -386,6 +484,11 @@ app.controller('CodeController', ['$scope', function($scope) {
 				vm.addPtoElem(helpfulText, vm.errorMsgContainer);
 			}
 		}
+	}
+
+	vm.showYou = function() {
+		console.log("hey");
+		customShow($("#you-container"));
 	}
 
 	vm.init();

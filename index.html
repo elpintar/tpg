@@ -20,6 +20,9 @@
 	<script src="levels/1/serpent.js"></script>
 	<script src="levels/2/passover.js"></script>
 	<script src="levels/2/desert.js"></script>
+	<script src="levels/3/theWord.js"></script>
+	<script src="levels/4/gospel.js"></script>
+	<script src="levels/4/endConvo.js"></script>
 </head>
 <body ng-app="tpg">
 
@@ -35,6 +38,9 @@
 					<p>No Scripture Loaded</p>
 				</div>
 				<div ng-include="'levels/2/passover.html'" id="passover-scripture" class="scripture-partial">
+					<p>No Scripture Loaded</p>
+				</div>
+				<div ng-include="'levels/4/gospel.html'" id="gospel-scripture" class="scripture-partial">
 					<p>No Scripture Loaded</p>
 				</div>
 			</div>
@@ -75,6 +81,9 @@
 						<div ng-include="'levels/0/origins.html'" id="origins-scripture" class="scripture-partial">
 							<p>Scripture Not Loaded</p>
 						</div>
+						<div ng-include="'levels/3/theWord.html'" id="the-word-scripture" class="scripture-partial">
+							<p>Scripture Not Loaded</p>
+						</div>
 					</div><ol id="code-full-screen"></ol>
 				</div>
 				<div id="button-content">
@@ -88,6 +97,19 @@
 		</div>
 
 		<div id="overlay-container"></div>
+
+		<div id="ending-container">
+			<div id="ending-content-container">
+				<h1>Epilogue</h1>
+				<div id="up-to">The epilogue is up to <a id="you-click">you</a>.</div>
+				<div id="you-container">
+					<div><a href="https://www.biblegateway.com/versions/New-International-Version-NIV-Bible/#booklist" target="_blank">you.discover(God.truth)</a></div>
+					<div><a href="https://www.google.com/maps/search/christian+churches+near+me" target="_blank">you.seek(God.family)</a></div>
+					<div><a href="http://www.gotquestions.org/archive.html#main-content-text" target="_blank">you.ask(God.answer)</a></div>
+				</div>
+			</div>			
+		</div>
+
 	</div>
 
 	<!-- EXECUTING SCRIPT -->

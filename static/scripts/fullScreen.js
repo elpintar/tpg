@@ -6,11 +6,23 @@ app.controller('FullScreenController', ['$scope', function($scope) {
 	vm.tryTransition = function() {
 		// stop if the code doesn't compile yet
 		if (!vm.o.codeCompiles) return;
-		originsTransition(function() {
-			vm.o.level = 1;
-			console.log("lower vm.level is", vm.o.level);
-			vm.initLevel();
-		});
+		// origins
+		if (vm.o.level === 0) {
+			originsTransition(function() {
+				vm.o.level = 1;
+				console.log("lower vm.level is", vm.o.level);
+				vm.initLevel();
+			});
+		}
+		// the Word
+		else if (vm.o.level === 3) {
+			console.log("ON TO ROMANS");
+		}
 	}
+
+	$("#you-click").click(function() {
+		console.log("hi");
+		customShow($("#you-container"));
+	});
 
 }]);
