@@ -77,15 +77,14 @@ app.controller('ConversationController', ['$scope', function($scope) {
     	$("#input-box").removeClass('inactive');
     	if (!vm.typing) {
 			  vm.typing = true;
-			  $("#command-input").focus();
 			}
 		});
-		$("#command-input").blur(function() {
+		$("#prompt").blur(function() {
 			$("#input-box").addClass('inactive').removeClass('blink');
 		  vm.typing = false;
 		});
 		// stop backspace from going back a page
-		$("#command-input").keypress(function(event) {
+		$("#prompt").keypress(function(event) {
 			// ENTER / RETURN
 		  if (event.which == 13) {
 		  	if (vm.o.conversationHappening) {
@@ -109,8 +108,16 @@ app.controller('ConversationController', ['$scope', function($scope) {
 		  	});
 		  	event.preventDefault();
 		  }
+		  // any other character
+		  else {
+		  	var c = String.fromCharCode(event.which);
+		  	$scope.$apply(function() {
+			  	vm.curCommand.text = vm.curCommand.text + c;
+		  	});
+		  	event.preventDefault();
+		  }
 		});
-		$("#command-input").keydown(function(event) {
+		$("#prompt").keydown(function(event) {
 		  // BACKSPACE
 		  if (event.keyCode === 8) {
 		  	$scope.$apply(function() {
@@ -158,6 +165,7 @@ app.controller('ConversationController', ['$scope', function($scope) {
 		}
 		// desert
 		else if (vm.o.level === 2) {
+			$("#code-full-screen").empty()
 			if (newStatement === "(end)") {
 				vm.clearConvo();
 				$("#full-screen-container").fadeIn(2000, function() {

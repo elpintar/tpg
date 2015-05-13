@@ -171,14 +171,6 @@
 #prompt:focus {
   outline: none; }
 
-#command-input {
-  width: 0;
-  height: 0;
-  padding: 0;
-  border: none;
-  position: absolute;
-  top: 7770777px; }
-
 #input-box {
   background-color: #030302; }
   #input-box.blink {
@@ -339,7 +331,6 @@
   left: 0;
   width: 100%;
   height: 100%;
-  min-height: 700px;
   background-color: black;
   color: #d2d2d4; }
   #ending-container #ending-content-container {
@@ -353,7 +344,12 @@
     #ending-container #ending-content-container #up-to {
       font-family: dayRoman, Times, serif;
       font-size: 28px;
-      margin-bottom: 1.5em; }
+      margin-bottom: 1.5em;
+      color: #CCC; }
+    #ending-container #ending-content-container #you-click {
+      color: #777; }
+      #ending-container #ending-content-container #you-click:hover {
+        color: white; }
     #ending-container #ending-content-container #you-container {
       -webkit-transition: visibility 1s ease-in-out;
       -moz-transition: visibility 1s ease-in-out;
@@ -367,7 +363,8 @@
       -o-transition: opacity 1s ease-in-out;
       transition: opacity 1s ease-in-out;
       opacity: 0;
-      font-family: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New; }
+      font-family: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;
+      color: #e6e6e6; }
     #ending-container #ending-content-container div {
       margin-top: 1em;
       margin-bottom: 1em;

@@ -101,6 +101,12 @@ gospelRules = [
 		error: "each person in the earth must under go a trying experience"
 	},
 	{
+		preId: "peopleOfTheWorld",
+		rule: "hasChild",
+		postId: "exceptGivenGrace",
+		error: "each person in the earth is given an exception by the grace of God"
+	},
+	{
 		preId: "tryButSin",
 		rule: "hasChild",
 		postId: "personObeyGod",
@@ -259,7 +265,7 @@ gospelRules = [
 		preId: "passOverSins",
 		rule: "before",
 		postId: "childOfGod",
-		error: "a person must be made blameless and holy before God "+
+		error: "a person's sins must be passed over in judgement "+
 					 "in order to become God's child"
 	},
 	{

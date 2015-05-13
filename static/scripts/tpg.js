@@ -13,7 +13,7 @@ app.controller('CodeController', ['$scope', function($scope) {
 		vm.initCodeFor = vm.o.level;
 		vm.initLevel();
 		// "cheat codes"
-		vm.o.startConvoNow = false; // starts convo right away
+		vm.o.startConvoNow = true; // starts convo right away
 		vm.cheat = false; // displays all key phrases
 	};
 
@@ -61,6 +61,7 @@ app.controller('CodeController', ['$scope', function($scope) {
 			vm.rules = genesisRules;
 		}
 		else if (vm.o.level == 2) {
+			$("#code-full-screen").append($('<li class="mjs-nestedSortable-no-nesting code-line" id="li_God"><div class="code-line-text">&lt;#include God.h&gt;</div></li><li class="mjs-nestedSortable-no-nesting code-line" id="li_heavens"><div class="code-line-text">God-&gt;create(heavens);</div></li><li class="mjs-nestedSortable-no-nesting code-line" id="li_time"><div class="code-line-text">God-&gt;init(time);</div></li><li class="mjs-nestedSortable-no-nesting code-line hasError" id="li_void"><div class="code-line-text">assert(typeof(earth)<br>&nbsp;== void);</div></li><li class="mjs-nestedSortable-no-nesting code-line" id="li_light" style="display: list-item;"><div class="code-line-text">God-&gt;init(light);</div></li>'));
 			vm.scriptureId = "scripture";
 			vm.scriptDiv = $("#"+vm.scriptureId);
 			vm.codeId = "code";
@@ -132,7 +133,9 @@ app.controller('CodeController', ['$scope', function($scope) {
 				vm.sectionLinksFound[sectionId] = [];
 				var firstSectionId = "section-"+vm.o.level.toString()+"-1";
 				if (sectionId === firstSectionId) {
-					customShow($(this));
+					setTimeout(function() {
+						customShow($("#"+firstSectionId));
+					}, 200);
 				}
 			});
 		}
@@ -162,10 +165,6 @@ app.controller('CodeController', ['$scope', function($scope) {
 					var nextSectionId = "section-" + vm.o.level.toString() +
 						"-" + (secNum + 1).toString();
 					customShow($("#"+nextSectionId));
-					// COMMENT OUT
-					// $(".section").each(function() {
-					// 	customShow($(this));
-					// });
 					// all words are uncovered - ripple effect
 					if ($("#"+nextSectionId).length === 0) {
 						rippleScriptureAnimation(vm.scriptPsId);
@@ -234,9 +233,10 @@ app.controller('CodeController', ['$scope', function($scope) {
 			vm.addLine(line, elemId);
 		}
 		// show code, fade in
+		customHide(vm.codeDiv);
 		setTimeout(function() {
 			customShow(vm.codeDiv);
-		}, 1000);
+		}, 1200);
 	}
 
 	vm.showRightScripture = function() {
@@ -259,7 +259,10 @@ app.controller('CodeController', ['$scope', function($scope) {
 			vm.scriptPsId = "gospel-scripture";
 		}
 		$("#"+vm.scriptPsId).show();
-	}		
+		$("#"+vm.scriptPsId+" .section").each(function() {
+			customHide($(this));
+		});
+	}
 
 	vm.addLine = function(line, elemId, appendElem) {
 		// set up div with content
@@ -349,7 +352,6 @@ app.controller('CodeController', ['$scope', function($scope) {
 		// only gets the first error
 		var oldErrorStr = vm.errorMsgContainer.children("#errors")
 																			 .children("p").html();
-		console.log("oldErrorStr", oldErrorStr);
 		// get all codeIds
 		var codeIds = [];
 		for (lineId in vm.lineLinks) {codeIds.push(lineId)};
@@ -402,8 +404,8 @@ app.controller('CodeController', ['$scope', function($scope) {
 						              missingRuleIds(rule) + " line in file.");
 						// made same mistake - offer hint
 						if (oldErrorStr === errStr) {
-							var hint = "(Look for a line related to a "+
-								missingRuleIds(rule) + " line in the text.)";
+							var hint = "(Look for a line related to "+
+								missingRuleIds(rule) + " in the text.)";
 							errStr = errStr + "<br>" + hint;
 						}
 						missingError = true;
@@ -425,10 +427,12 @@ app.controller('CodeController', ['$scope', function($scope) {
 						if (oldErrorStr === errStr) {
 							if (curId.length % 2 == 0)
 								var hint = "(The " + curId +
-									" line makes sense somewhere later in the code.)";
+									" line is missing a line before it" +
+									" or makes more sense somewhere later in the code.)";
 							else
 								var hint = "(Try moving the " + curId +
-									" line to a logical place further down in the code.)";
+									" line to a logical place further down in the code "+
+									"or moving a certain other line before it.)";
 							errStr = errStr.replace("&nbsp;", hint + "<br>");
 						}
 						hasErrorType = "before";
@@ -438,8 +442,8 @@ app.controller('CodeController', ['$scope', function($scope) {
 						              missingRuleIds(rule) + " line in file.");
 						// made same mistake - offer hint
 						if (oldErrorStr === errStr) {
-							var hint = "(Look for a line related to a "+
-								missingRuleIds(rule) + " line in the text.)";
+							var hint = "(Look for a line related to "+
+								missingRuleIds(rule) + " in the text.)";
 							errStr = errStr + "<br>" + hint;
 						}
 						missingError = true;
@@ -487,7 +491,6 @@ app.controller('CodeController', ['$scope', function($scope) {
 	}
 
 	vm.showYou = function() {
-		console.log("hey");
 		customShow($("#you-container"));
 	}
 

@@ -151,7 +151,7 @@ genesisRules = [
 		preId: "eve",
 		rule: "before",
 		postId: "sleepBreak",
-		error: "rib can only be extracted when Adam is asleep"
+		error: "Adam wakes up before Eve can be created"
 	},
 ]
 

@@ -10,18 +10,17 @@ app.controller('FullScreenController', ['$scope', function($scope) {
 		if (vm.o.level === 0) {
 			originsTransition(function() {
 				vm.o.level = 1;
-				console.log("lower vm.level is", vm.o.level);
 				vm.initLevel();
 			});
 		}
 		// the Word
 		else if (vm.o.level === 3) {
-			console.log("ON TO ROMANS");
+			vm.o.level = 4;
+			vm.initLevel();
 		}
 	}
 
 	$("#you-click").click(function() {
-		console.log("hi");
 		customShow($("#you-container"));
 	});
 
