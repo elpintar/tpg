@@ -8,12 +8,12 @@ app.controller('CodeController', ['$scope', function($scope) {
 	vm.init = function() {
 		// vm.o is an object to be shared across controllers
 		vm.o = {};
-		vm.o.level = 1;
+		vm.o.level = 0;
 		vm.o.conversationHappening = false;
 		vm.initCodeFor = vm.o.level;
 		vm.initLevel();
 		// "cheat codes"
-		vm.o.startConvoNow = true; // starts convo right away
+		vm.o.startConvoNow = false; // starts convo right away if true
 		vm.cheat = false; // displays all key phrases
 	};
 
