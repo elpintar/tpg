@@ -20,9 +20,9 @@
 	<script src="levels/1/serpent.js"></script>
 	<script src="levels/2/passover.js"></script>
 	<script src="levels/2/desert.js"></script>
-	<script src="levels/3/theWord.js"></script>
-	<script src="levels/4/gospel.js"></script>
-	<script src="levels/4/endConvo.js"></script>
+	<script src="levels/4/theWord.js"></script>
+	<script src="levels/5/gospel.js"></script>
+	<script src="levels/5/endConvo.js"></script>
 </head>
 <body ng-app="tpg">
 	<div id="main-container" ng-controller="CodeController as codeCtrl" when-ready="initCodeLinks();" ready-check="checkForScripture();">
@@ -39,7 +39,7 @@
 				<div ng-include="'levels/2/passover.html'" id="passover-scripture" class="scripture-partial">
 					<p>No Scripture Loaded</p>
 				</div>
-				<div ng-include="'levels/4/gospel.html'" id="gospel-scripture" class="scripture-partial">
+				<div ng-include="'levels/5/gospel.html'" id="gospel-scripture" class="scripture-partial">
 					<p>No Scripture Loaded</p>
 				</div>
 			</div>
@@ -79,7 +79,7 @@
 						<div ng-include="'levels/0/origins.html'" id="origins-scripture" class="scripture-partial">
 							<p>Scripture Not Loaded</p>
 						</div>
-						<div ng-include="'levels/3/theWord.html'" id="the-word-scripture" class="scripture-partial">
+						<div ng-include="'levels/4/theWord.html'" id="the-word-scripture" class="scripture-partial">
 							<p>Scripture Not Loaded</p>
 						</div>
 					</div><ol id="code-full-screen"></ol>
@@ -91,6 +91,12 @@
 					</div>
 					<div id="error-message-full-screen"></div>
 				</div>
+			</div>
+		</div>
+
+		<div id="prophecy-container" ng-controller="ProphecyController as pCtrl">
+			<div ng-include="'levels/3/prophecy.html'" id="origins-scripture" class="scripture-partial">
+				<p>Scripture Not Loaded</p>
 			</div>
 		</div>
 
@@ -113,6 +119,7 @@
 	<!-- EXECUTING SCRIPT -->
 	<script src="static/scripts/tpg.js"></script>
 	<script src="static/scripts/conversation.js"></script>
+	<script src="levels/3/prophecy.js"></script>
 	<script src="static/scripts/fullScreen.js"></script>
 	<script src="static/scripts/whenReady.js"></script>
 </body>

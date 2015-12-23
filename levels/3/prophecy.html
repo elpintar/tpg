@@ -1,0 +1,65 @@
+<!-- prophecy.html -->
+
+<div class="full-screen">
+
+  <!-- OLD TESTAMENT PROPHECY -->
+  <div id="old-t-container" class="half-screen sub-screen">
+    <div class="sub-screen-header">
+      <div id="old-t-title" class="header-title">Old Testament</div>
+    </div>
+    <div class="content-body no-padding">
+
+      <!-- scripture sidebar -->
+      <ol class="left-sidebar sidebar-o-scriptures">
+        <li class="scripture-box" id="micah">
+          <span class="scripture-box-title">Micah</span>
+        </li>
+        <li class="scripture-box" id="isaiah">
+          <span class="scripture-box-title">Isaiah</span>
+        </li>
+        <li class="scripture-box" id="zechariah">
+          <span class="scripture-box-title">Zechariah</span>
+        </li>
+      </ol>
+
+      <!-- scripture content -->
+      <div id="old-t-scripture" ng-include="'levels/3/old_t_scriptures.html'" class="prophecy-scripture">
+        <p>No Scripture Loaded</p>
+      </div>
+    </div>
+  <!-- NEW TESTAMENT FULFILLMENT -->
+  </div><div id="new-t-container" class="half-screen sub-screen">
+    <div class="sub-screen-header">
+      <div id="new-t-title" class="header-title">New Testament</div>
+    </div>
+    <div class="content-body no-padding">
+
+      <!-- scripture sidebar -->
+      <ol class="right-sidebar sidebar-o-scriptures">
+        <li class="scripture-box" id="matthew">
+          <span class="scripture-box-title">Matthew</span>
+        </li>
+        <li class="scripture-box" id="luke">
+          <span class="scripture-box-title">Luke</span>
+        </li>
+        <li class="scripture-box" id="john">
+          <span class="scripture-box-title">John</span>
+        </li>
+      </ol>
+
+      <!-- scripture content -->
+      <div id="new-t-scripture" ng-include="'levels/3/new_t_scriptures.html'" class="prophecy-scripture">
+        <p>No Scripture Loaded</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- LINKS MADE -->
+  <!-- <div id="linker-container">
+    <div id="linker-button">LINK</div>
+    <ul id="links-made">
+      
+    </ul>
+  </div> -->
+
+</div>

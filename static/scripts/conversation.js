@@ -40,16 +40,16 @@ app.controller('ConversationController', ['$scope', function($scope) {
 			vm.respondAndAsk("", true);
 			vm.o.conversationHappening = true;
 		}
-		if (vm.o.level == 3) {
+		if (vm.o.level == 4) {
 			$("#full-screen-container").fadeOut(2000, function() {
 				setTimeout(function() {
-					vm.o.level = 4;
+					vm.o.level = 5;
 					vm.initLevel();
 					vm.clearConvo();
 				}, 2000);
 			});
 		}
-		if (vm.o.level == 4) {
+		if (vm.o.level == 5) {
 			vm.convObj = endConvoObj;
 			vm.curStatement = endConvoStart;
 			vm.respondAndAsk("", true);
@@ -178,7 +178,7 @@ app.controller('ConversationController', ['$scope', function($scope) {
 				});
 			}
 		}
-		else if (vm.o.level === 4) {
+		else if (vm.o.level === 5) {
 			if (newStatement === "(end)") {
 				customShow($("#ending-container"));
 			}

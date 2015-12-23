@@ -77,7 +77,23 @@ app.controller('CodeController', ['$scope', function($scope) {
 			vm.scriptureName = "Exodus";
 			vm.rules = passoverRules;
 		}
+		// TODO
 		if (vm.o.level == 3) {
+			$("#prophecy-container").show();
+			//vm.scriptureId = "scripture-full-screen";
+			//vm.scriptDiv = $("#"+vm.scriptureId);
+			//vm.codeId = "code-full-screen";
+			//vm.codeDiv = $("#"+vm.codeId);
+			//vm.codeAddToSelector = "#"+vm.codeId;
+			//vm.codeRunId = "code-run-area-full-screen";
+			//vm.errorMsgContainer = $("#error-message-full-screen");
+			//vm.lineLinks = theWordObj;
+			//vm.initLines = theWordInitLines;
+			//vm.fileName = "theWord.py";
+			//vm.scriptureName = "John";
+			//vm.rules = theWordRules;
+		}
+		if (vm.o.level == 4) {
 			$("#full-screen-container").show();
 			vm.scriptureId = "scripture-full-screen";
 			vm.scriptDiv = $("#"+vm.scriptureId);
@@ -92,7 +108,7 @@ app.controller('CodeController', ['$scope', function($scope) {
 			vm.scriptureName = "John";
 			vm.rules = theWordRules;
 		}
-		else if (vm.o.level == 4) {
+		else if (vm.o.level == 5) {
 			vm.scriptureId = "scripture";
 			vm.scriptDiv = $("#"+vm.scriptureId);
 			vm.codeId = "code";
@@ -107,7 +123,7 @@ app.controller('CodeController', ['$scope', function($scope) {
 			vm.rules = gospelRules;
 		}
 		// if we need to init the code for this level, do so
-		if (vm.initCodeFor !== vm.o.level)
+		if (vm.initCodeFor !== vm.o.level && vm.o.level !== 3)
 			vm.initCodeLinks();
 	};
 
@@ -299,9 +315,12 @@ app.controller('CodeController', ['$scope', function($scope) {
 			vm.scriptPsId = "passover-scripture";
 		}
 		else if (vm.o.level == 3) {
-			vm.scriptPsId = "the-word-scripture";
+			// no scripture
 		}
 		else if (vm.o.level == 4) {
+			vm.scriptPsId = "the-word-scripture";
+		}
+		else if (vm.o.level == 5) {
 			vm.scriptPsId = "gospel-scripture";
 		}
 		$("#"+vm.scriptPsId).show();

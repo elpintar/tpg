@@ -42,6 +42,8 @@
     left: 0;
     overflow: scroll;
     padding: 10px; }
+    .sub-screen .content-body.no-padding {
+      padding: 0px; }
 
 #scripture-container {
   width: 35vw;
@@ -66,37 +68,58 @@
     width: 30vw;
     background-color: #313121; }
 
-#scripture, #scripture-full-screen {
+.half-screen {
+  width: 49vw; }
+  .half-screen .sub-screen-header {
+    width: 49vw;
+    background-color: #f8f6f1;
+    color: #402E1D; }
+
+#scripture,
+#scripture-full-screen,
+.prophecy-scripture {
   font-family: dayRoman, Times, serif;
   font-size: 16px;
   line-height: 22px;
   color: #402E1D; }
-  #scripture p, #scripture-full-screen p {
+  #scripture p,
+  #scripture-full-screen p,
+  .prophecy-scripture p {
     cursor: default;
     -webkit-transition: color 0.25s ease-in-out;
     -moz-transition: color 0.25s ease-in-out;
     -ms-transition: color 0.25s ease-in-out;
     -o-transition: color 0.25s ease-in-out;
     transition: color 0.25s ease-in-out; }
-    #scripture p.lit-up, #scripture-full-screen p.lit-up {
+    #scripture p.lit-up,
+    #scripture-full-screen p.lit-up,
+    .prophecy-scripture p.lit-up {
       -webkit-transition: color 0.25s ease-in-out;
       -moz-transition: color 0.25s ease-in-out;
       -ms-transition: color 0.25s ease-in-out;
       -o-transition: color 0.25s ease-in-out;
       transition: color 0.25s ease-in-out;
       color: #d4baa1; }
-    #scripture p a, #scripture-full-screen p a {
+    #scripture p a,
+    #scripture-full-screen p a,
+    .prophecy-scripture p a {
       -webkit-transition: all 0.1s ease-in-out;
       -moz-transition: all 0.1s ease-in-out;
       -ms-transition: all 0.1s ease-in-out;
       -o-transition: all 0.1s ease-in-out;
       transition: all 0.1s ease-in-out; }
-      #scripture p a.found, #scripture-full-screen p a.found {
+      #scripture p a.found,
+      #scripture-full-screen p a.found,
+      .prophecy-scripture p a.found {
         color: #a97a4d; }
-      #scripture p a:hover, #scripture-full-screen p a:hover {
+      #scripture p a:hover,
+      #scripture-full-screen p a:hover,
+      .prophecy-scripture p a:hover {
         color: white;
         cursor: pointer; }
-  #scripture .section, #scripture-full-screen .section {
+  #scripture .section,
+  #scripture-full-screen .section,
+  .prophecy-scripture .section {
     -webkit-transition: visibility 1s ease-in-out;
     -moz-transition: visibility 1s ease-in-out;
     -ms-transition: visibility 1s ease-in-out;
@@ -198,7 +221,8 @@
   #input-box.inactive {
     background-color: #262822; }
 
-#full-screen-container {
+#full-screen-container,
+.full-screen {
   position: absolute;
   top: 0;
   left: 0;
@@ -207,18 +231,30 @@
   min-height: 700px;
   background-color: black;
   color: #d2d2d4; }
-  #full-screen-container #content-container {
+  #full-screen-container #content-container,
+  #full-screen-container .content-container,
+  .full-screen #content-container,
+  .full-screen .content-container {
     text-align: center;
     padding-top: 1em;
     padding-bottom: 2em;
     background-color: black; }
-    #full-screen-container #content-container h1 {
+    #full-screen-container #content-container h1,
+    #full-screen-container .content-container h1,
+    .full-screen #content-container h1,
+    .full-screen .content-container h1 {
       font-size: 45px;
       margin: 1em 0em; }
-    #full-screen-container #content-container #work-content {
+    #full-screen-container #content-container #work-content,
+    #full-screen-container .content-container #work-content,
+    .full-screen #content-container #work-content,
+    .full-screen .content-container #work-content {
       display: inline-block;
       white-space: nowrap; }
-    #full-screen-container #content-container #button-content {
+    #full-screen-container #content-container #button-content,
+    #full-screen-container .content-container #button-content,
+    .full-screen #content-container #button-content,
+    .full-screen .content-container #button-content {
       width: 100%;
       text-align: center;
       padding-top: 1em; }
@@ -397,5 +433,41 @@
         #ending-container #ending-content-container div a:hover {
           cursor: pointer;
           color: white; }
+
+#old-t-container {
+  background-color: #e5d9c8; }
+
+#new-t-container {
+  background-color: #f5f1ea; }
+
+#linker-container {
+  position: absolute;
+  left: 50vw;
+  background-color: #030302; }
+
+.sidebar-o-scriptures {
+  display: inline-block;
+  width: 100px; }
+  .sidebar-o-scriptures.left-sidebar {
+    float: left; }
+  .sidebar-o-scriptures.right-sidebar {
+    float: right; }
+  .sidebar-o-scriptures .scripture-box {
+    width: 100%;
+    height: 100px;
+    background-color: #030302;
+    color: white;
+    text-align: center;
+    border: 1px solid #313121; }
+    .sidebar-o-scriptures .scripture-box .scripture-box-title {
+      display: inline-block;
+      margin-top: 40px; }
+
+.prophecy-scripture {
+  padding: 5px; }
+  .prophecy-scripture#old-t-scripture {
+    margin-left: 100px; }
+  .prophecy-scripture#new-t-scripture {
+    margin-right: 100px; }
 
 /*# sourceMappingURL=tpg.css.map */

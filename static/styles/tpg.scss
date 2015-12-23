@@ -4,6 +4,8 @@
 $scriptureWidth: 35vw;
 $codeWidth: 35vw;
 $promptWidth: 30vw;
+$halfScreenWidth: 49vw;
+$sidebarPropheciesWidth: 100px;
 
 $tan: #EDE5D9;
 $darkTan: #402E1D;
@@ -77,6 +79,9 @@ $darkButton: #252525;
 		left: 0;
 		overflow: scroll;
 		padding: 10px;
+		&.no-padding {
+			padding: 0px;
+		}
 	}
 }
 
@@ -110,9 +115,20 @@ $darkButton: #252525;
 	}
 }
 
+.half-screen {
+	width: $halfScreenWidth;
+	.sub-screen-header {
+		width: $halfScreenWidth;
+		background-color: $tanlighter;
+		color: $darkTan;
+	}
+}
+
 // SCRIPTURE STYLES
 
-#scripture,#scripture-full-screen {
+#scripture,
+#scripture-full-screen,
+.prophecy-scripture {
 	font-family: dayRoman, Times, serif;
 	font-size: 16px;
 	line-height: 22px;
@@ -209,12 +225,6 @@ $darkButton: #252525;
 	white-space: pre;
 }
 
-#input-field {
-	#command-display {
-
-	}
-}
-
 // no focus lines
 #prompt:focus {
   outline: none;
@@ -232,7 +242,8 @@ $darkButton: #252525;
 
 // FULL SCREEN STYLES
 
-#full-screen-container {
+#full-screen-container,
+.full-screen {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -241,7 +252,8 @@ $darkButton: #252525;
 	min-height: 700px;
 	background-color: black;
 	color: darken($whitegray, 10%);
-	#content-container {
+	#content-container,
+	.content-container {
 		text-align: center;
 		padding-top: 1em;
 		padding-bottom: 2em;
@@ -415,7 +427,54 @@ $darkButton: #252525;
 	}
 }
 
+// PROPHECY LEVEL
 
+#old-t-container {
+	background-color: darken($tan, 5%);
+}
+
+#new-t-container {
+	background-color: lighten($tan, 5%);
+}
+
+#linker-container {
+	position: absolute;
+	left: 50vw;
+	background-color: $blackgray;
+}
+
+.sidebar-o-scriptures {
+	display: inline-block;
+  width: $sidebarPropheciesWidth;
+  &.left-sidebar {
+  	float: left;
+  }
+  &.right-sidebar {
+  	float: right;
+  }
+  .scripture-box {
+  	width: 100%;
+  	height: $sidebarPropheciesWidth;
+  	background-color: $blackgray;
+  	color: white;
+  	text-align: center;
+  	.scripture-box-title {
+  		display: inline-block;
+  		margin-top: 40px;
+  	}
+  	border: 1px solid $blackgraylighter;
+  }
+}
+
+.prophecy-scripture {
+	&#old-t-scripture {
+		margin-left: $sidebarPropheciesWidth;
+	}
+	&#new-t-scripture {
+		margin-right: $sidebarPropheciesWidth;
+	}
+	padding: 5px;
+}
 
 
 
