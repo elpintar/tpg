@@ -8,17 +8,17 @@ app.controller('CodeController', ['$scope', function($scope) {
 	vm.init = function() {
 		// vm.o is an object to be shared across controllers
 		vm.o = {};
-		vm.o.level = 0;
+		vm.o.level = vm.getLevelFromURL();
 		vm.o.conversationHappening = false;
 		vm.initCodeFor = vm.o.level;
 		vm.initLevel();
 		// "cheat codes"
-		vm.o.startConvoNow = false; // starts convo right away if true
 		vm.cheat = false; // displays all key phrases
 	};
 
 	vm.initLevel = function() {
 		console.log("initLevel", vm.o.level);
+		vm.updateLevelInURL(vm.o.level.toString());
 		vm.o.codeCompiles = false;
 		customHide($("#"+vm.codeRunId));
 		vm.o.conversationHappening = false;
@@ -37,6 +37,7 @@ app.controller('CodeController', ['$scope', function($scope) {
 			vm.lineLinks = originsObj;
 			vm.initLines = originsInitLines;
 			vm.fileName = "earth.c";
+			vm.scriptureName = "Genesis";
 			vm.rules = originsRules;
 			// special tutorial hint if they don't do anything for 5s
 			setTimeout(function() {
@@ -58,6 +59,7 @@ app.controller('CodeController', ['$scope', function($scope) {
 			vm.lineLinks = genesisObj;
 			vm.initLines = genesisInitLines;
 			vm.fileName = "eden.c";
+			vm.scriptureName = "Genesis";
 			vm.rules = genesisRules;
 		}
 		else if (vm.o.level == 2) {
@@ -72,6 +74,7 @@ app.controller('CodeController', ['$scope', function($scope) {
 			vm.lineLinks = passoverObj;
 			vm.initLines = passoverInitLines;
 			vm.fileName = "egypt.py";
+			vm.scriptureName = "Exodus";
 			vm.rules = passoverRules;
 		}
 		if (vm.o.level == 3) {
@@ -86,6 +89,7 @@ app.controller('CodeController', ['$scope', function($scope) {
 			vm.lineLinks = theWordObj;
 			vm.initLines = theWordInitLines;
 			vm.fileName = "theWord.py";
+			vm.scriptureName = "John";
 			vm.rules = theWordRules;
 		}
 		else if (vm.o.level == 4) {
@@ -99,12 +103,52 @@ app.controller('CodeController', ['$scope', function($scope) {
 			vm.lineLinks = gospelObj;
 			vm.initLines = gospelInitLines;
 			vm.fileName = "gospel.py";
+			vm.scriptureName = "John | Romans";
 			vm.rules = gospelRules;
 		}
 		// if we need to init the code for this level, do so
 		if (vm.initCodeFor !== vm.o.level)
 			vm.initCodeLinks();
 	};
+
+	vm.getLevelFromURL = function() {
+		anchorIndex = document.URL.indexOf("#");
+	  if (anchorIndex != -1) {
+	    partialId = document.URL.substr(anchorIndex+1);
+	    // weird html tag link error fix
+	    if (partialId.indexOf("/") === 0) {
+	    	partialId = partialId.substr(1);
+	    }
+	    console.log("level from anchor in URL:", partialId);
+	    levelNum = parseInt(partialId);
+	    // decimal as 1 means start the conversation
+	    var doti = partialId.indexOf(".");
+	    if (doti !== -1) {
+	    	var decimal = parseInt(partialId[doti+1]);
+	    	if (decimal === 1) {
+	    		console.log("start convo");
+	    		vm.o.startConvoNow = true;
+	    	}
+	    }
+	    else vm.o.startConvoNow = false;
+	    return levelNum;
+	  }
+	  else {
+	  	return 0;
+	  }	
+	}
+
+	vm.updateLevelInURL = function(levelStr) {
+		// setTimeout is for not doing two scope.apply's at once
+		setTimeout(function() {
+			// click a fake link to get the anchor tag in the url
+	  	var fakeLink = $("<a>")
+	  		.attr("href", "#"+levelStr);
+	  	$("body").append(fakeLink);
+	  	fakeLink.click();
+	  	fakeLink.remove();
+		}, 10);
+	}
 
 	vm.initCodeLinks = function() {
 		vm.initCodeScreen();
@@ -135,6 +179,7 @@ app.controller('CodeController', ['$scope', function($scope) {
 				if (sectionId === firstSectionId) {
 					setTimeout(function() {
 						customShow($("#"+firstSectionId));
+						customShow($("#scripture-header-title"));
 					}, 200);
 				}
 			});
@@ -236,6 +281,7 @@ app.controller('CodeController', ['$scope', function($scope) {
 		customHide(vm.codeDiv);
 		setTimeout(function() {
 			customShow(vm.codeDiv);
+			customShow($("#code-header-title"));
 		}, 1200);
 	}
 

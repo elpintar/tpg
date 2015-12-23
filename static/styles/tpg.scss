@@ -60,6 +60,14 @@ $darkButton: #252525;
 		position: fixed;
 		top: 0;
 		width: 100%;
+		text-align: center;
+		.header-title {
+			@include hiddenTransition();
+			display: inline-block;
+			margin-top: 0.5em;
+			font-size: 1.1em;
+			margin-top: 0.3em;
+		}
 	}
 	.content-body {
 		position: absolute;
@@ -78,6 +86,9 @@ $darkButton: #252525;
 	#scripture-header {
 		width: $scriptureWidth;
 		background-color: $tanlighter;
+		#scripture-header-title {
+			color: $darkTan;
+		}
 	}
 }
 

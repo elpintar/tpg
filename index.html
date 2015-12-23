@@ -25,13 +25,12 @@
 	<script src="levels/4/endConvo.js"></script>
 </head>
 <body ng-app="tpg">
-
 	<div id="main-container" ng-controller="CodeController as codeCtrl" when-ready="initCodeLinks();" ready-check="checkForScripture();">
 
 		<!-- SCRIPTURE -->
 		<div id="scripture-container" class="sub-screen">
 			<div id="scripture-header" class="sub-screen-header">
-				
+				<span id="scripture-header-title" class="header-title">{{scriptureName}}</span>
 			</div>
 			<div id="scripture" class="content-body">
 				<div ng-include="'levels/1/genesis.html'" id="genesis-scripture" class="scripture-partial">
@@ -47,7 +46,7 @@
 		<!-- CODE -->
 		</div><div id="code-container" class="sub-screen">
 			<div id="code-header" class="sub-screen-header">
-				
+				<span id="code-header-title" class="header-title">{{fileName}}</span>
 			</div>
 			<ol id="code" class="content-body">
 				

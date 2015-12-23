@@ -26,6 +26,8 @@ app.controller('ConversationController', ['$scope', function($scope) {
 		// don't start unless the code works and you haven't started yet
 		if (!vm.o.codeCompiles || vm.o.conversationHappening) return;
 		console.log("starting convo for level", vm.o.level);
+		// add a 0.1 to the current level so if they reload, it starts the convo
+		vm.updateLevelInURL((vm.o.level + 0.1).toString());
 		if (vm.o.level == 1) {
 			vm.convObj = serpentObj;
 			vm.curStatement = serpentStart;
