@@ -4,7 +4,7 @@
 $scriptureWidth: 35vw;
 $codeWidth: 35vw;
 $promptWidth: 30vw;
-$halfScreenWidth: 49vw;
+$halfScreenWidth: 50vw;
 $sidebarPropheciesWidth: 100px;
 
 $tan: #EDE5D9;
@@ -69,6 +69,7 @@ $darkButton: #252525;
 			margin-top: 0.5em;
 			font-size: 1.1em;
 			margin-top: 0.3em;
+			z-index: 1;
 		}
 	}
 	.content-body {
@@ -77,7 +78,7 @@ $darkButton: #252525;
 		bottom: 0;
 		right: 0;
 		left: 0;
-		overflow: scroll;
+		overflow-y: auto;
 		padding: 10px;
 		&.no-padding {
 			padding: 0px;
@@ -160,7 +161,7 @@ $darkButton: #252525;
 
 #code-container,#prompt-container,
 #code-full-screen,#code-run-area-full-screen,
-#error-message-full-screen {
+#error-message-full-screen, .scripture-box {
 	font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;
 	font-size: 16px;
 	color: white;
@@ -272,6 +273,10 @@ $darkButton: #252525;
 			padding-top: 1em;
 		}
 	}
+}
+.full-screen {
+	height: 100vh;
+	min-height: 500px;
 }
 
 #scripture-full-screen, 
@@ -431,10 +436,24 @@ $darkButton: #252525;
 
 #old-t-container {
 	background-color: darken($tan, 5%);
+	.sub-screen-header {
+		background-color: $blackgray;
+	}
 }
 
 #new-t-container {
 	background-color: lighten($tan, 5%);
+	.sub-screen-header {
+		background-color: $blackgray;
+	}
+}
+
+#old-t-container,
+#new-t-container {
+	.sub-screen-header {
+		color: white;
+		box-shadow: 0px 0px 1px 1px $blackgraylighter inset;
+	}
 }
 
 #linker-container {
@@ -446,6 +465,8 @@ $darkButton: #252525;
 .sidebar-o-scriptures {
 	display: inline-block;
   width: $sidebarPropheciesWidth;
+  min-height: calc(100vh - 30px);
+  background-color: lighten($blackgray, 10%);
   &.left-sidebar {
   	float: left;
   }
@@ -453,27 +474,39 @@ $darkButton: #252525;
   	float: right;
   }
   .scripture-box {
-  	width: 100%;
+  	width: $sidebarPropheciesWidth;
   	height: $sidebarPropheciesWidth;
   	background-color: $blackgray;
+  	box-shadow: 0px 0px 1px 1px $blackgraylighter inset;
   	color: white;
   	text-align: center;
+  	font-size: 0.8em;
   	.scripture-box-title {
   		display: inline-block;
   		margin-top: 40px;
   	}
-  	border: 1px solid $blackgraylighter;
+  	&:hover {
+  		cursor: pointer;
+  		background-color: $blackgraylighter;
+  	}
+  	&.selected {
+  		box-shadow: 0px 0px 2px 2px $whitegray inset;
+  	}
   }
 }
 
 .prophecy-scripture {
+	overflow-y: auto;
 	&#old-t-scripture {
 		margin-left: $sidebarPropheciesWidth;
 	}
 	&#new-t-scripture {
 		margin-right: $sidebarPropheciesWidth;
 	}
-	padding: 5px;
+	padding: 49px 77px;
+	p {
+		margin-bottom: 0.2em;
+	}
 }
 
 
