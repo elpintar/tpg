@@ -113,6 +113,14 @@
       #scripture-full-screen p a.found,
       .prophecy-scripture p a.found {
         color: #a97a4d; }
+      #scripture p a.isSelected,
+      #scripture-full-screen p a.isSelected,
+      .prophecy-scripture p a.isSelected {
+        color: #B63839; }
+      #scripture p a.isLinked,
+      #scripture-full-screen p a.isLinked,
+      .prophecy-scripture p a.isLinked {
+        color: #02b864; }
       #scripture p a:hover,
       #scripture-full-screen p a:hover,
       .prophecy-scripture p a:hover {
@@ -136,7 +144,8 @@
 
 #code-container, #prompt-container,
 #code-full-screen, #code-run-area-full-screen,
-#error-message-full-screen, .scripture-box {
+#error-message-full-screen,
+.scripture-box, #linker-container {
   font-family: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;
   font-size: 16px;
   color: white; }
@@ -259,10 +268,6 @@
       width: 100%;
       text-align: center;
       padding-top: 1em; }
-
-.full-screen {
-  height: 100vh;
-  min-height: 500px; }
 
 #scripture-full-screen,
 #code-full-screen {
@@ -439,6 +444,11 @@
           cursor: pointer;
           color: white; }
 
+.full-screen {
+  height: 100vh;
+  min-height: 500px;
+  position: fixed; }
+
 #old-t-container {
   background-color: #e5d9c8; }
   #old-t-container .sub-screen-header {
@@ -453,11 +463,6 @@
 #new-t-container .sub-screen-header {
   color: white;
   box-shadow: 0px 0px 1px 1px #313121 inset; }
-
-#linker-container {
-  position: absolute;
-  left: 50vw;
-  background-color: #030302; }
 
 .sidebar-o-scriptures {
   display: inline-block;
@@ -487,12 +492,45 @@
 
 .prophecy-scripture {
   overflow-y: auto;
-  padding: 49px 77px; }
+  padding: 40px; }
   .prophecy-scripture#old-t-scripture {
-    margin-left: 100px; }
+    margin-left: 100px;
+    padding-right: 115px; }
   .prophecy-scripture#new-t-scripture {
-    margin-right: 100px; }
+    margin-right: 100px;
+    padding-left: 115px; }
   .prophecy-scripture p {
     margin-bottom: 0.2em; }
+
+#linker-container {
+  position: fixed;
+  width: 150px;
+  left: calc(50vw - 75px);
+  top: calc(1 * 100px);
+  background-color: #030302;
+  color: white;
+  border-radius: 5px; }
+  #linker-container #linker-button {
+    text-align: center;
+    font-size: 0.8em;
+    background-color: gray;
+    border-radius: 5px;
+    background-color: #313121;
+    padding: 0.25em; }
+    #linker-container #linker-button:hover {
+      background-color: #505035;
+      cursor: pointer; }
+  #linker-container #links-made {
+    text-align: left;
+    padding: 5px;
+    font-size: 0.8em; }
+    #linker-container #links-made li {
+      margin-bottom: 0.5em;
+      padding-left: 14px;
+      text-indent: -14px; }
+      #linker-container #links-made li.isHighlighted {
+        background-color: #ECECED;
+        color: #030302;
+        box-shadow: 0px 0px 2px 2px #ECECED; }
 
 /*# sourceMappingURL=tpg.css.map */

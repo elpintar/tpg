@@ -24,6 +24,8 @@ $darkerErrorRed: darken($darkErrorRed, 5%);
 $darkScripture: #222;
 $darkCode: #151515;
 $darkButton: #252525;
+$codeGreen: darken(#02D172, 5%);
+$calmRed: #B63839;
 
 @font-face {
   font-family: dayRoman;
@@ -146,6 +148,12 @@ $darkButton: #252525;
 			&.found {
 				color: $foundWordColor;
 			}
+			&.isSelected {
+				color: $calmRed;
+			}
+			&.isLinked {
+				color: $codeGreen;
+			}
 			&:hover {
 				color: white;
 				cursor: pointer;
@@ -161,7 +169,8 @@ $darkButton: #252525;
 
 #code-container,#prompt-container,
 #code-full-screen,#code-run-area-full-screen,
-#error-message-full-screen, .scripture-box {
+#error-message-full-screen,
+.scripture-box, #linker-container {
 	font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;
 	font-size: 16px;
 	color: white;
@@ -273,10 +282,6 @@ $darkButton: #252525;
 			padding-top: 1em;
 		}
 	}
-}
-.full-screen {
-	height: 100vh;
-	min-height: 500px;
 }
 
 #scripture-full-screen, 
@@ -434,6 +439,12 @@ $darkButton: #252525;
 
 // PROPHECY LEVEL
 
+.full-screen {
+	height: 100vh;
+	min-height: 500px;
+	position: fixed;
+}
+
 #old-t-container {
 	background-color: darken($tan, 5%);
 	.sub-screen-header {
@@ -454,12 +465,6 @@ $darkButton: #252525;
 		color: white;
 		box-shadow: 0px 0px 1px 1px $blackgraylighter inset;
 	}
-}
-
-#linker-container {
-	position: absolute;
-	left: 50vw;
-	background-color: $blackgray;
 }
 
 .sidebar-o-scriptures {
@@ -495,21 +500,64 @@ $darkButton: #252525;
   }
 }
 
+$linkerContainerWidth: 150px;
+$halfLinkerContainerWidth: $linkerContainerWidth / 2;
+$prophecyScripturePadding: 40px;
+$combinedProphecyPadding: 
+	$prophecyScripturePadding + $halfLinkerContainerWidth;
+
 .prophecy-scripture {
 	overflow-y: auto;
+	padding: $prophecyScripturePadding;
 	&#old-t-scripture {
 		margin-left: $sidebarPropheciesWidth;
+		padding-right: $combinedProphecyPadding;
 	}
 	&#new-t-scripture {
 		margin-right: $sidebarPropheciesWidth;
+		padding-left: $combinedProphecyPadding;
 	}
-	padding: 49px 77px;
 	p {
 		margin-bottom: 0.2em;
 	}
 }
 
-
+#linker-container {
+	position: fixed;
+	width: $linkerContainerWidth;
+	left: calc(50vw - #{$halfLinkerContainerWidth});
+	top: calc(1 * #{$sidebarPropheciesWidth});
+	background-color: $blackgray;
+	color: white;
+	border-radius: 5px;
+	#linker-button {
+		text-align: center;
+		font-size: 0.8em;
+		background-color: gray;
+    border-radius: 5px;
+    background-color: $blackgraylighter;
+    padding: 0.25em;
+    &:hover {
+    	background-color: lighten($blackgraylighter, 10%);
+    	cursor: pointer;
+    }
+	}
+	#links-made {
+		text-align: left;
+		padding: 5px;
+		font-size: 0.8em;
+		li {
+			margin-bottom: 0.5em;
+	    padding-left: 14px;
+	    text-indent: -14px;
+			&.isHighlighted {
+	  		background-color: $whitegray;
+	  		color: $blackgray;
+	  		box-shadow: 0px 0px 2px 2px $whitegray;
+	  	}
+		}
+	}
+}
 
 
 
