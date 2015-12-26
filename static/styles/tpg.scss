@@ -47,11 +47,22 @@ $calmRed: #B63839;
 	opacity: 0;
 }
 
+@mixin showTransition() {
+	@include transition(visibility, 1.0s, ease-in-out);
+	visibility: visible;
+	@include transition(opacity, 1.0s, ease-in-out);
+	opacity: 1;
+}
+
 // CONTAINER STYLES
 
 #main-container {
 	width: 100vw;
 	height: 100vh;
+}
+
+#outside-container {
+	background-color: black;
 }
 
 .sub-screen {
@@ -270,7 +281,7 @@ $calmRed: #B63839;
 		background-color: black;
 		h1 {
 			font-size: 45px;
-			margin: 1em 0em;
+			margin: 0.8em 0em;
 		}
 		#work-content {
 			display: inline-block;
@@ -486,7 +497,9 @@ $calmRed: #B63839;
   	color: white;
   	text-align: center;
   	font-size: 0.8em;
+  	@include transition(background-color, 3.0s, ease-in-out);
   	.scripture-box-title {
+	  	@include transition(color, 3.0s, ease-in-out);
   		display: inline-block;
   		margin-top: 40px;
   	}
@@ -496,6 +509,17 @@ $calmRed: #B63839;
   	}
   	&.selected {
   		box-shadow: 0px 0px 2px 2px $whitegray inset;
+  	}
+  	&.disabled {
+  		@include transition(background-color, 3.0s, ease-in-out);
+  		background-color: lighten($blackgray,7%);
+  		.scripture-box-title {
+  			@include transition(color, 3.0s, ease-in-out);
+  			color: lighten($blackgray,10%);
+  		}
+  	}
+  	&.completed {
+  		background-color: darken($codeGreen, 25%);
   	}
   }
 }
@@ -541,10 +565,17 @@ $combinedProphecyPadding:
     	background-color: lighten($blackgraylighter, 10%);
     	cursor: pointer;
     }
+    &.completed {
+  		background-color: darken($codeGreen, 15%);
+  	}
+    #linker-help-text {
+  		@include hiddenTransition();
+    }
 	}
 	#links-made {
 		text-align: left;
 		padding: 5px;
+		padding-top: 10px;
 		font-size: 0.8em;
 		li {
 			margin-bottom: 0.5em;

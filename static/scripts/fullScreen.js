@@ -14,8 +14,8 @@ app.controller('FullScreenController', ['$scope', function($scope) {
 			});
 		}
 		// the Word
-		else if (vm.o.level === 3) {
-			vm.o.level = 4;
+		else if (vm.o.level === 4) {
+			vm.o.level = 5;
 			vm.initLevel();
 		}
 	}

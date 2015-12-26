@@ -20,9 +20,9 @@ passoverObj = {
 		key: "Moses",
 		lineObj: {code: "moses = israelites.leader"},
 	},
-	"eachHousehold": {
+	"forFamilyInIsraelitesHousehold": {
 		key: "for each household",
-		lineObj: {code: "<br>for family in israelites:",
+		lineObj: {code: "<br>for family in israelites.households:",
 							endCode: "&nbsp;"}
 	},
 	"noDefects": {
@@ -37,9 +37,9 @@ passoverObj = {
 		key: "at twilight",
 		lineObj: {code: "time.waitFor(time.twilight)"},
 	},
-	"communityMembers": {
+	"forFamilyInIsraelitesCommunity": {
 		key: "all the members of the community of Israel",
-		lineObj: {code: "<br>for family in israelites:",
+		lineObj: {code: "<br>for family in israelites.community:",
 							endCode: "&nbsp;"}
 	},
 	"slaughter": {
@@ -107,31 +107,33 @@ passoverObj = {
 
 passoverRules = [
 	{
-		preId: "eachHousehold",
+		preId: "forFamilyInIsraelitesHousehold",
 		rule: "hasChild",
 		postId: "noDefects",
-		error: "picking a lamb without defects must be done for each family"
+		error: "picking a lamb without defects must be done for each family"+
+						" (drag line INSIDE the for loop)"
 	},
 	{
-		preId: "eachHousehold",
+		preId: "forFamilyInIsraelitesHousehold",
 		rule: "hasChild",
 		postId: "lamb",
-		error: "a lamb must be chosen for each family"
+		error: "a lamb must be chosen for each family"+
+					 " (drag line INSIDE the for loop)"
 	},
 	{
-		preId: "communityMembers",
+		preId: "forFamilyInIsraelitesCommunity",
 		rule: "hasChild",
 		postId: "slaughter",
 		error: "the lamb must be sacrificed for each family"
 	},
 	{
-		preId: "communityMembers",
+		preId: "forFamilyInIsraelitesCommunity",
 		rule: "hasChild",
 		postId: "bloodOnDoor",
 		error: "each family must smear the blood upon their doorpost"
 	},
 	{
-		preId: "communityMembers",
+		preId: "forFamilyInIsraelitesCommunity",
 		rule: "hasChild",
 		postId: "eatLamb",
 		error: "each family must eat their sacrificed lamb"
@@ -197,7 +199,7 @@ passoverRules = [
 	{
 		preId: "israelites",
 		rule: "before",
-		postId: "eachHousehold",
+		postId: "forFamilyInIsraelitesHousehold",
 		error: "the Israelites do not exist to have families"
 	},
 	{
@@ -294,11 +296,11 @@ passoverRules = [
 	{
 		preId: "twilight",
 		rule: "before",
-		postId: "communityMembers",
+		postId: "forFamilyInIsraelitesCommunity",
 		error: "each family must sacrifice their lamb after twilight"
 	},
 	{
-		preId: "communityMembers",
+		preId: "forFamilyInIsraelitesCommunity",
 		rule: "before",
 		postId: "midnight",
 		error: "each family must act before "+
@@ -307,7 +309,7 @@ passoverRules = [
 	{
 		preId: "twilight",
 		rule: "before",
-		postId: "communityMembers",
+		postId: "forFamilyInIsraelitesCommunity",
 		error: "each family must act after twilight"
 	},
 ]

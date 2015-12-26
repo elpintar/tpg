@@ -24,7 +24,9 @@ app.controller('CodeController', ['$scope', function($scope) {
 		vm.o.conversationHappening = false;
 		vm.sectionLinkCounts = {};
 		vm.sectionLinksFound = {};
+		$("#main-container").hide();
 		$("#full-screen-container").hide();
+		$("#prophecy-container").hide();
 		if (vm.o.level == 0) {
 			$("#full-screen-container").show();
 			vm.scriptureId = "scripture-full-screen";
@@ -49,6 +51,7 @@ app.controller('CodeController', ['$scope', function($scope) {
 			}, 5000);
 		}
 		else if (vm.o.level == 1) {
+			$("#main-container").show();
 			vm.scriptureId = "scripture";
 			vm.scriptDiv = $("#"+vm.scriptureId);
 			vm.codeId = "code";
@@ -63,7 +66,7 @@ app.controller('CodeController', ['$scope', function($scope) {
 			vm.rules = genesisRules;
 		}
 		else if (vm.o.level == 2) {
-			$("#code-full-screen").append($('<li class="mjs-nestedSortable-no-nesting code-line" id="li_God"><div class="code-line-text">&lt;#include God.h&gt;</div></li><li class="mjs-nestedSortable-no-nesting code-line" id="li_heavens"><div class="code-line-text">God-&gt;create(heavens);</div></li><li class="mjs-nestedSortable-no-nesting code-line" id="li_time"><div class="code-line-text">God-&gt;init(time);</div></li><li class="mjs-nestedSortable-no-nesting code-line hasError" id="li_void"><div class="code-line-text">assert(typeof(earth)<br>&nbsp;== void);</div></li><li class="mjs-nestedSortable-no-nesting code-line" id="li_light" style="display: list-item;"><div class="code-line-text">God-&gt;init(light);</div></li>'));
+			$("#main-container").show();
 			vm.scriptureId = "scripture";
 			vm.scriptDiv = $("#"+vm.scriptureId);
 			vm.codeId = "code";
@@ -78,6 +81,7 @@ app.controller('CodeController', ['$scope', function($scope) {
 			vm.rules = passoverRules;
 		}
 		if (vm.o.level == 3) {
+			$("#prophecy-container").show();
 			vm.initProphecyLevel();
 			vm.scriptureId = "old-t-scripture";
 			vm.scriptDiv = $("#"+vm.scriptureId);
@@ -88,10 +92,11 @@ app.controller('CodeController', ['$scope', function($scope) {
 			vm.errorMsgContainer = $("#linker-help-text");
 			vm.lineLinks = prophecyObj;
 			vm.initLines = prophecyInitLines;
-			$("#prophecy-container").show();
+			// variable just for found prophecies
+			vm.propheciesFound = 0;
 		}
 		if (vm.o.level == 4) {
-			$("#full-screen-container").show();
+			$("#full-screen-container").fadeIn(4000, function() {});
 			$("#content-container h1").html("The Gospel");
 			vm.scriptureId = "scripture-full-screen";
 			vm.scriptDiv = $("#"+vm.scriptureId);
@@ -105,8 +110,17 @@ app.controller('CodeController', ['$scope', function($scope) {
 			vm.fileName = "theWord.py";
 			vm.scriptureName = "John";
 			vm.rules = theWordRules;
+			// special tutorial hint if they don't do anything for 5s
+			setTimeout(function() {
+				if ($("#section-4-2").css("visibility") === "hidden") {
+					var helpfulText = "Read with your cursor to expand your sight.";
+					vm.addPtoElem(helpfulText, vm.errorMsgContainer);
+					customShow(vm.errorMsgContainer);
+				}
+			}, 5000);
 		}
 		else if (vm.o.level == 5) {
+			$("#main-container").show();
 			vm.scriptureId = "scripture";
 			vm.scriptDiv = $("#"+vm.scriptureId);
 			vm.codeId = "code";
@@ -166,6 +180,15 @@ app.controller('CodeController', ['$scope', function($scope) {
 	vm.initCodeLinks = function() {
 		vm.initCodeScreen();
 		var lineLinks = vm.lineLinks;
+		var sectionsSelector = "#"+vm.scriptPsId+" .section";
+		if (vm.o.level === 3) {
+			sectionsSelector = ".prophecy-scripture .section";
+		}
+		var linksSelector = "#"+vm.scriptPsId+" p a";
+		if (vm.o.level === 3) {
+			linksSelector = "#old-t-scripture p a, " +
+										 "#new-t-scripture p a"
+		}
 		for (var id in lineLinks) {
 			var linkObj = lineLinks[id];
 			// look for code key in each paragraph
@@ -177,19 +200,18 @@ app.controller('CodeController', ['$scope', function($scope) {
 				var text = sp.html();
 				// key is in this paragraph
 				if (text.indexOf(key) != -1 && !foundKey) {
-					console.log("found ", key);
 					foundKey = true;
 					aTag = aTag.format(id, key);
 					text = text.replace(key, aTag);
 					sp.html(text);
 				}
 			});
-			if (vm.o.level === 3) continue;
 			// count how many code links in each section
-			$("#"+vm.scriptPsId+" .section").each(function(index){
+			$(sectionsSelector).each(function(index){
 				var sectionId = $(this).attr("id");
 				vm.sectionLinkCounts[sectionId] = $("#"+sectionId+" a").length;
 				vm.sectionLinksFound[sectionId] = [];
+				if (vm.o.level === 3) return;
 				// show first section right away
 				var firstSectionId = "section-"+vm.o.level.toString()+"-1";
 				if (sectionId === firstSectionId) {
@@ -201,12 +223,7 @@ app.controller('CodeController', ['$scope', function($scope) {
 			});
 		}
 		// CLICK a key phrase
-		var linkSelector = "#"+vm.scriptPsId+" p a";
-		if (vm.o.level === 3) {
-			linkSelector = "#old-t-scripture p a, " +
-										 "#new-t-scripture p a"
-		}
-		$(linkSelector).click(function() {
+		$(linksSelector).click(function() {
 			var id = $(this).attr("id");
 			$("#li_"+id).addClass("isHighlighted");
 			if (vm.o.level !== 3) {
@@ -234,26 +251,73 @@ app.controller('CodeController', ['$scope', function($scope) {
 						newTLinkObj.lineObj.hasOwnProperty("code") &&
 						oldTLinkObj.lineObj.code === 
 						newTLinkObj.lineObj.code) {
+					vm.propheciesFound++;
+					$(".selected").addClass("completed");
 					vm.addLinesForLink(id);
 					// color as linked, not selected
 					$(".prophecy-scripture .isSelected").addClass("isLinked");
 					$(".prophecy-scripture .isSelected").removeClass("isSelected");
+					// first one linked, unlock rest of passages
+					if (vm.propheciesFound === 1) {
+						vm.fadeOutInText($("#linker-help-text"),"Link together "+
+							"all the prophecies,<br>one link in each passage.");
+						setTimeout(function() {
+							$(".scripture-box").removeClass("disabled");
+						}, 3000);
+					}
+					// END LEVEL 3 -> GO TO LEVEL 4
+					else if (vm.propheciesFound === 6) {
+						$("#linker-button").addClass("completed");
+						vm.fadeOutInText($("#linker-help-text"),"Click here to "+
+							"connect all links and fulfill prophecy.");
+						$("#linker-help-text").click(function() {
+							$("#prophecy-container").fadeOut(3000, function() {
+								vm.o.level = 4;
+								vm.initLevel();
+								setTimeout(function() {
+								}, 5000);
+							});
+						});
+					}
 				}
 			}
 		});
 		// HOVER over a key phrase
-		$(linkSelector).mouseenter(function() {
+		$(linksSelector).mouseenter(function() {
 			$(this).addClass("found");
 			var id = $(this).attr("id");
 			$("#li_"+id).addClass("isHighlighted");
-			if (vm.o.level === 3) return;
 			// mark down that we found this id
 			var sectionId = $(this).parent().parent().attr("id");
 			var secFoundIds = vm.sectionLinksFound[sectionId];
 			if (secFoundIds.indexOf(id) === -1) {
 				secFoundIds.push(id);
+				if (vm.o.level === 3) {
+					// found first two prophecies
+					if (sectionId === "section-samuel" &&
+						secFoundIds.length === 2) {
+						customHide($("#section-matthew"));
+						$("#matthew").removeClass("disabled");
+						$("#matthew").click();
+						customShow($("#new-t-title"));
+						setTimeout(function() {
+							$("#section-matthew").show();
+							customShow($("#section-matthew"));
+							setTimeout(function() {
+								vm.fadeOutInText($("#linker-help-text"),"Read with your cursor "+
+									"to discover possible fulfillments of prophecies.");
+							}, 1000);
+						}, 1000);
+					}
+					// found first two fulfillments
+					else if (sectionId === "section-matthew" &&
+						secFoundIds.length === 2) {
+						vm.fadeOutInText($("#linker-help-text"), "Click key phrases "+
+							" to match the correct prophecy together with its fulfillment.");
+					}
+				}
 				// reveal next section if all in this one found
-				if (secFoundIds.length === vm.sectionLinkCounts[sectionId]) {
+				else if (secFoundIds.length === vm.sectionLinkCounts[sectionId]) {
 					var secIdEnd = sectionId.substring(
 						"section-0-".length, sectionId.length);
 					var secNum = extractNumFromString(secIdEnd);
@@ -267,7 +331,7 @@ app.controller('CodeController', ['$scope', function($scope) {
 						setTimeout(function() {
 							customShow($("#"+vm.codeRunId));
 							// tutorial hint to click code if no code!
-							if (vm.o.level == 0 && 
+							if ((vm.o.level == 0 || vm.o.level == 4) && 
 									$(vm.codeAddToSelector).children().length == 0)
 								vm.errorMsgContainer.append($("<p>").html(
 								"Click key phrases to generate code."));
@@ -278,11 +342,11 @@ app.controller('CodeController', ['$scope', function($scope) {
 			}
 		});
 		// LEAVE HOVER on a key phrase
-		$(linkSelector).mouseleave(function() {
+		$(linksSelector).mouseleave(function() {
 			var id = $(this).attr("id");
 			$("#li_"+id).removeClass("isHighlighted");
 		});
-		if (vm.cheat) $(linkSelector).css("color", "blue");
+		if (vm.cheat) $(linksSelector).css("color", "blue");
 		// mark completed
 		vm.initCodeFor = vm.o.level;
 	};
@@ -493,10 +557,10 @@ app.controller('CodeController', ['$scope', function($scope) {
 						if (oldErrorStr === errStr) {
 							if (curId.length % 2 === 0)
 								var hint = "(Try moving the " + rule.postId +
-									" line within the " + rule.preId + " part of code.)";
+									" line INSIDE the " + rule.preId + " part of code.)";
 							else
 								var hint = "(The " + rule.postId + " line makes most " +
-									"sense inside the " + rule.preId + " part of code.)";
+									"sense INSIDE the " + rule.preId + " part of code.)";
 							errStr = errStr.replace("&nbsp;", hint + "<br>");
 						}
 						hasErrorType = "hasChild";
@@ -597,14 +661,14 @@ app.controller('CodeController', ['$scope', function($scope) {
 	}
 
 	vm.initProphecyLevel = function() {
-		console.log("initProphecyLevel");
 		// after partials load, show text
 		setTimeout(function() {
-			console.log("initProphecyLevel timeout");
+			$(".scripture-partial").show(); // strange bug hides this
 			$(".scripture-box").each(function(i, elem) {
 				var scriptureBoxId = this.id;
 				var sectionId = "section-" + scriptureBoxId;
 				$(this).click(function() {
+					if ($(this).hasClass("disabled")) return;
 					var isOT = $(this).parent().hasClass("left-sidebar");
 					// hide all scriptures in this testament
 					var scriptureContainerId = (isOT) ?
@@ -618,11 +682,25 @@ app.controller('CodeController', ['$scope', function($scope) {
 				});
 			});
 			customShow($("#old-t-title"));
-			customShow($("#new-t-title"));
-			$("#samuel").click();
-			$("#matthew").click();			
+			setTimeout(function() {
+				$("#samuel").removeClass("disabled");
+				setTimeout(function() {
+					$("#samuel").click();
+					customShow($("#linker-help-text"));
+				}, 1000);
+			}, 1000);
 		}, 50);
 	};
+
+	// fades in and out text assuming it has transitions set up
+	//   for color and height
+	vm.fadeOutInText = function(elem, textAfter) {
+		customHide(elem);
+		setTimeout(function() {
+			elem.html(textAfter);
+			customShow(elem);
+		}, 1000);
+	}
 
 	vm.init();
 }])

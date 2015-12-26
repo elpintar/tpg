@@ -33,14 +33,17 @@ app.controller('ConversationController', ['$scope', function($scope) {
 			vm.curStatement = serpentStart;
 			vm.respondAndAsk("", true);
 			vm.o.conversationHappening = true;
+			$("#prompt").focus();
 		}
 		if (vm.o.level == 2) {
 			vm.convObj = desertObj;
 			vm.curStatement = desertStart;
 			vm.respondAndAsk("", true);
 			vm.o.conversationHappening = true;
+			$("#prompt").focus();
 		}
 		if (vm.o.level == 4) {
+			console.log("level 4 completed");
 			$("#full-screen-container").fadeOut(2000, function() {
 				setTimeout(function() {
 					vm.o.level = 5;
@@ -54,6 +57,7 @@ app.controller('ConversationController', ['$scope', function($scope) {
 			vm.curStatement = endConvoStart;
 			vm.respondAndAsk("", true);
 			vm.o.conversationHappening = true;
+			$("#prompt").focus();
 		}
 	}
 
@@ -170,12 +174,8 @@ app.controller('ConversationController', ['$scope', function($scope) {
 			$("#code-full-screen").empty()
 			if (newStatement === "(end)") {
 				vm.clearConvo();
-				$("#full-screen-container").fadeIn(2000, function() {
-					setTimeout(function() {
-						vm.o.level = 3;
-						vm.initLevel();
-					}, 2000);
-				});
+				vm.o.level = 3;
+				vm.initLevel();
 			}
 		}
 		else if (vm.o.level === 5) {

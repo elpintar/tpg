@@ -6,6 +6,9 @@
   width: 100vw;
   height: 100vh; }
 
+#outside-container {
+  background-color: black; }
+
 .sub-screen {
   height: 100%;
   display: inline-block;
@@ -254,7 +257,7 @@
     .full-screen #content-container h1,
     .full-screen .content-container h1 {
       font-size: 45px;
-      margin: 1em 0em; }
+      margin: 0.8em 0em; }
     #full-screen-container #content-container #work-content,
     #full-screen-container .content-container #work-content,
     .full-screen #content-container #work-content,
@@ -480,8 +483,18 @@
     box-shadow: 0px 0px 1px 1px #313121 inset;
     color: white;
     text-align: center;
-    font-size: 0.8em; }
+    font-size: 0.8em;
+    -webkit-transition: background-color 3s ease-in-out;
+    -moz-transition: background-color 3s ease-in-out;
+    -ms-transition: background-color 3s ease-in-out;
+    -o-transition: background-color 3s ease-in-out;
+    transition: background-color 3s ease-in-out; }
     .sidebar-o-scriptures .scripture-box .scripture-box-title {
+      -webkit-transition: color 3s ease-in-out;
+      -moz-transition: color 3s ease-in-out;
+      -ms-transition: color 3s ease-in-out;
+      -o-transition: color 3s ease-in-out;
+      transition: color 3s ease-in-out;
       display: inline-block;
       margin-top: 40px; }
     .sidebar-o-scriptures .scripture-box:hover {
@@ -489,6 +502,22 @@
       background-color: #313121; }
     .sidebar-o-scriptures .scripture-box.selected {
       box-shadow: 0px 0px 2px 2px #ECECED inset; }
+    .sidebar-o-scriptures .scripture-box.disabled {
+      -webkit-transition: background-color 3s ease-in-out;
+      -moz-transition: background-color 3s ease-in-out;
+      -ms-transition: background-color 3s ease-in-out;
+      -o-transition: background-color 3s ease-in-out;
+      transition: background-color 3s ease-in-out;
+      background-color: #181810; }
+      .sidebar-o-scriptures .scripture-box.disabled .scripture-box-title {
+        -webkit-transition: color 3s ease-in-out;
+        -moz-transition: color 3s ease-in-out;
+        -ms-transition: color 3s ease-in-out;
+        -o-transition: color 3s ease-in-out;
+        transition: color 3s ease-in-out;
+        color: #222216; }
+    .sidebar-o-scriptures .scripture-box.completed {
+      background-color: #01391f; }
 
 .prophecy-scripture {
   overflow-y: auto;
@@ -520,9 +549,25 @@
     #linker-container #linker-button:hover {
       background-color: #505035;
       cursor: pointer; }
+    #linker-container #linker-button.completed {
+      background-color: #016c3b; }
+    #linker-container #linker-button #linker-help-text {
+      -webkit-transition: visibility 1s ease-in-out;
+      -moz-transition: visibility 1s ease-in-out;
+      -ms-transition: visibility 1s ease-in-out;
+      -o-transition: visibility 1s ease-in-out;
+      transition: visibility 1s ease-in-out;
+      visibility: hidden;
+      -webkit-transition: opacity 1s ease-in-out;
+      -moz-transition: opacity 1s ease-in-out;
+      -ms-transition: opacity 1s ease-in-out;
+      -o-transition: opacity 1s ease-in-out;
+      transition: opacity 1s ease-in-out;
+      opacity: 0; }
   #linker-container #links-made {
     text-align: left;
     padding: 5px;
+    padding-top: 10px;
     font-size: 0.8em; }
     #linker-container #links-made li {
       margin-bottom: 0.5em;

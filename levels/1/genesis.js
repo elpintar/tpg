@@ -115,19 +115,22 @@ genesisRules = [
 		preId: "work",
 		rule: "hasChild",
 		postId: "animal",
-		error: "animal must be chosen when Adam is working to name animals"
+		error: "animal must be chosen when Adam is working to name animals"+
+					 " (drag line INSIDE the while loop)"
 	},
 	{
 		preId: "work",
 		rule: "hasChild",
 		postId: "callName",
-		error: "animals must be named only while Adam is working to name them"
+		error: "animals must be named only while Adam is working to name them"+
+					 " (drag line INSIDE the while loop)"
 	},
 	{
 		preId: "work",
 		rule: "hasChild",
 		postId: "alone",
-		error: "Adam gets lonely only while he is working to name animals"
+		error: "Adam gets lonely only while he is working to name animals"+
+					 " (drag line INSIDE the while loop)"
 	},
 	{
 		preId: "alone",

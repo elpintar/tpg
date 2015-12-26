@@ -36,8 +36,8 @@ prophecyObj = {
 		key: "one who will be ruler over Israel",
 		lineObj: {}
 	},
-	"wounds": {
-		key: "by his wounds we are healed",
+	"turned": {
+		key: "each of us has turned to our own way",
 		lineObj: {}
 	},
 	"lame": {
@@ -72,7 +72,7 @@ prophecyObj = {
 		lineObj: {code: "King.heal('blind')"}
 	},
 	"willBeInYou": {
-		key: "will be in you",
+		key: "he lives with you and will be in you",
 		lineObj: {code: "God.give(God.Spirit)"}
 	},
 	"YeshuaPriesthood": {
@@ -80,8 +80,8 @@ prophecyObj = {
 		lineObj: {code: "King = Yeshua = Jesus"}
 	},
 	// fake ones
-	"saveFromSins": {
-		key: "he will save his people from their sins",
+	"faithfulToLaw": {
+		key: "Joseph her husband was faithful to the law",
 		lineObj: {}
 	},
 	"mercy": {
@@ -97,13 +97,12 @@ prophecyObj = {
 		key: "Jesus of Nazareth, the King of the Jews",
 		lineObj: {}
 	},
-	"inMyFather": {
-		key: "I am in my Father, and you"+
-				 " are in me, and I am in you",
+	"youWillLive": {
+		key: "Because I live, you also will live.",
 		lineObj: {}
 	},
-	"sacrificedOnceForAll": {
-		key: "He sacrificed for their sins once for all",
+	"betterCovenant": {
+		key: "the guarantor of a better covenant",
 		lineObj: {}
 	},
 }

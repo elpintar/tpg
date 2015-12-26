@@ -25,49 +25,51 @@
 	<script src="levels/5/endConvo.js"></script>
 </head>
 <body ng-app="tpg">
-	<div id="main-container" ng-controller="CodeController as codeCtrl" when-ready="initCodeLinks();" ready-check="checkForScripture();">
+	<div id="outside-container" ng-controller="CodeController as codeCtrl" when-ready="initCodeLinks();" ready-check="checkForScripture();">
 
-		<!-- SCRIPTURE -->
-		<div id="scripture-container" class="sub-screen">
-			<div id="scripture-header" class="sub-screen-header">
-				<span id="scripture-header-title" class="header-title">{{scriptureName}}</span>
-			</div>
-			<div id="scripture" class="content-body">
-				<div ng-include="'levels/1/genesis.html'" id="genesis-scripture" class="scripture-partial">
-					<p>No Scripture Loaded</p>
+		<div id="main-container">
+			<!-- SCRIPTURE -->
+			<div id="scripture-container" class="sub-screen">
+				<div id="scripture-header" class="sub-screen-header">
+					<span id="scripture-header-title" class="header-title">{{scriptureName}}</span>
 				</div>
-				<div ng-include="'levels/2/passover.html'" id="passover-scripture" class="scripture-partial">
-					<p>No Scripture Loaded</p>
+				<div id="scripture" class="content-body">
+					<div ng-include="'levels/1/genesis.html'" id="genesis-scripture" class="scripture-partial">
+						<p>No Scripture Loaded</p>
+					</div>
+					<div ng-include="'levels/2/passover.html'" id="passover-scripture" class="scripture-partial">
+						<p>No Scripture Loaded</p>
+					</div>
+					<div ng-include="'levels/5/gospel.html'" id="gospel-scripture" class="scripture-partial">
+						<p>No Scripture Loaded</p>
+					</div>
 				</div>
-				<div ng-include="'levels/5/gospel.html'" id="gospel-scripture" class="scripture-partial">
-					<p>No Scripture Loaded</p>
+			<!-- CODE -->
+			</div><div id="code-container" class="sub-screen">
+				<div id="code-header" class="sub-screen-header">
+					<span id="code-header-title" class="header-title">{{fileName}}</span>
 				</div>
-			</div>
-		<!-- CODE -->
-		</div><div id="code-container" class="sub-screen">
-			<div id="code-header" class="sub-screen-header">
-				<span id="code-header-title" class="header-title">{{fileName}}</span>
-			</div>
-			<ol id="code" class="content-body">
-				
-			</ol>
-		<!-- PROMPT -->
-		</div><div id="prompt-container" ng-controller="ConversationController as convCtrl"  class="sub-screen">
-			<div id="prompt-header" class="sub-screen-header" >
-				<div id="code-run-area" ng-click="runCode();clearInput();startConvo();">
-					<div id="code-run-button">RUN CODE</div>
+				<ol id="code" class="content-body">
+					
+				</ol>
+			<!-- PROMPT -->
+			</div><div id="prompt-container" ng-controller="ConversationController as convCtrl"  class="sub-screen">
+				<div id="prompt-header" class="sub-screen-header" >
+					<div id="code-run-area" ng-click="runCode();clearInput();startConvo();">
+						<div id="code-run-button">RUN CODE</div>
+					</div>
 				</div>
-			</div>
-			<!-- tabindex='1' makes the prompt "focusable" -->
-			<div id="prompt" class="content-body" tabindex='1'>
-				<div id="prompt-error-message">
+				<!-- tabindex='1' makes the prompt "focusable" -->
+				<div id="prompt" class="content-body" tabindex='1'>
+					<div id="prompt-error-message">
+					</div>
+					<div id="conversation-content"></div>
+					<span id="pre-input-content"></span>
+					<span id="input-field">
+						<span id="command-display">{{curCommand.text}}</span><span id="input-box" class="inactive">&nbsp;</span>
+					</span>
+					<div id="post-content-spacer"></div>
 				</div>
-				<div id="conversation-content"></div>
-				<span id="pre-input-content"></span>
-				<span id="input-field">
-					<span id="command-display">{{curCommand.text}}</span><span id="input-box" class="inactive">&nbsp;</span>
-				</span>
-				<div id="post-content-spacer"></div>
 			</div>
 		</div>
 
@@ -94,7 +96,7 @@
 			</div>
 		</div>
 
-		<div id="prophecy-container">
+		<div id="prophecy-container" style="display:none;">
 			<div ng-include="'levels/3/prophecy.html'">
 				<p>Prophecy Level Not Loaded</p>
 			</div>

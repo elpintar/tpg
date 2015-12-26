@@ -38,7 +38,7 @@ var customShow = function(elem) {
 // custom hide that uses visibility and opacity
 // used in conjunction with the sass mixin "hiddenTransition"
 var customHide = function(elem) {
-  elem.css("opacity", 0).css("visibility", "hidden");
+  elem.css("opacity", 0);//.css("visibility", "hidden");
 }
 
 // for weird id number bug!
