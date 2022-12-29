@@ -13,7 +13,7 @@ originsObj = {
 	},
 	"God": {
 		key: "God",
-		lineObj: {code: "#include <God.h>"}
+		lineObj: {code: "#include &lt;God.h&gt;"}
 	},
 	"heavens": {
 		key: "the heavens",

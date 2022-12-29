@@ -1,7 +1,7 @@
 
 genesisInitLines = [
-	{code: "<#include God.h>"},
-	{code: "<#include earth.h>"},
+	{code: "#include &lt;God.h&gt;"},
+	{code: "#include &lt;earth.h&gt;"},
 	{code: "&nbsp;"},
 	{code: "int main() {",
 	 midCode: [{code: "God->init(earth);"}],
